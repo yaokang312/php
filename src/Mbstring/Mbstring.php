@@ -50,6 +50,9 @@ namespace Symfony\Polyfill\Mbstring;
  * - mb_substr_count         - Count the number of substring occurrences
  * - mb_ucfirst              - Make a string's first character uppercase
  * - mb_lcfirst              - Make a string's first character lowercase
+ * - mb_trim                 - Strip whitespace (or other characters) from the beginning and end of a string
+ * - mb_ltrim                - Strip whitespace (or other characters) from the beginning of a string
+ * - mb_rtrim                - Strip whitespace (or other characters) from the end of a string
  *
  * Not implemented:
  * - mb_convert_kana         - Convert "kana" one from another ("zen-kaku", "han-kaku" and more)
@@ -75,6 +78,8 @@ final class Mbstring
         ['µ', 'ſ', "\xCD\x85", 'ς', "\xCF\x90", "\xCF\x91", "\xCF\x95", "\xCF\x96", "\xCF\xB0", "\xCF\xB1", "\xCF\xB5", "\xE1\xBA\x9B", "\xE1\xBE\xBE"],
         ['μ', 's', 'ι',        'σ', 'β',        'θ',        'φ',        'π',        'κ',        'ρ',        'ε',        "\xE1\xB9\xA1", 'ι'],
     ];
+
+    private const CHARACTERS = " \f\n\r\t\v\x00\u{00A0}\u{1680}\u{2000}\u{2001}\u{2002}\u{2003}\u{2004}\u{2005}\u{2006}\u{2007}\u{2008}\u{2009}\u{200A}\u{2028}\u{2029}\u{202F}\u{205F}\u{3000}\u{0085}\u{180E}";
 
     private static $encodingList = ['ASCII', 'UTF-8'];
     private static $language = 'neutral';
@@ -979,6 +984,59 @@ final class Mbstring
 
         return $encoding;
     }
+
+    public static function mb_trim(string $string, ?string $characters = null, ?string $encoding = null): string
+    {
+        return self::mb_internal_trim('^[%s]+|[%s]+$', $string, $characters, $encoding);
+    }
+
+    public static function mb_ltrim(string $string, ?string $characters = null, ?string $encoding = null): string
+    {
+        return self::mb_internal_trim('^[%s]+', $string, $characters, $encoding);
+    }
+
+    public static function mb_rtrim(string $string, ?string $characters = null, ?string $encoding = null): string
+    {
+        return self::mb_internal_trim('[%s]+$', $string, $characters, $encoding);
+    }
+
+    private static function mb_internal_trim(string $regex, string $string, ?string $characters = null, ?string $encoding = null): string
+    {
+        if (null === $encoding) {
+            $encoding = mb_internal_encoding();
+        }
+
+        self::assertEncoding($encoding, debug_backtrace()[1]['function'].'(): Argument #3 ($encoding) must be a valid encoding, "%s" given.');
+
+        if ('' === $characters) {
+            return null === $encoding ? $string : mb_convert_encoding($string, $encoding);
+        }
+
+        if (null === $characters) {
+            $characters = self::CHARACTERS;
+        }
+
+        $regexCharacter = preg_quote($characters ?? '', '/');
+        $regex = sprintf($regex, $regexCharacter, $regexCharacter);
+
+        if ('ASCII' === mb_detect_encoding($characters) && 'ASCII' === mb_detect_encoding($string) && !empty(array_intersect(str_split(self::CHARACTERS), str_split($string)))) {
+            $options = 'g';
+        } else {
+            $options = '';
+        }
+        
+        try {
+            $test = mb_ereg_replace($regex, "", $string, $options);
+
+            if (null === $test) {
+                throw new \Exception();
+            }
+
+            return $test;
+        } catch (\Exception $e) {
+            return preg_replace('/'.$regex.'/', "", $string);
+        }
+    } 
 
     private static function assertEncoding(string $encoding, string $errorFormat): void
     {
