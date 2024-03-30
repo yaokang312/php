@@ -14,3 +14,11 @@ use Symfony\Polyfill\Php84 as p;
 if (\PHP_VERSION_ID >= 80400) {
     return;
 }
+
+if (!function_exists('mb_ucfirst') && function_exists('mb_substr')) {
+    function mb_ucfirst(string $string, ?string $encoding = null): string { return p\Php84::mb_ucfirst($string, $encoding); }
+}
+
+if (!function_exists('mb_lcfirst') && function_exists('mb_substr'))  {
+    function mb_lcfirst(string $string, ?string $encoding = null): string { return p\Php84::mb_lcfirst($string, $encoding); }
+}

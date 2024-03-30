@@ -727,4 +727,28 @@ class MbstringTest extends TestCase
         yield ['mb_str_pad(): Argument #4 ($pad_type) must be STR_PAD_LEFT, STR_PAD_RIGHT, or STR_PAD_BOTH', '▶▶', 6, ' ', 123456];
         yield ['mb_str_pad(): Argument #5 ($encoding) must be a valid encoding, "unexisting" given', '▶▶', 6, ' ', \STR_PAD_BOTH, 'unexisting'];
     }
+
+    /**
+     * @covers \Symfony\Polyfill\Mbstring\Mbstring::mb_lcfirst
+     */
+    public function test_mb_lcfirst(): void
+    {
+        $this->assertSame('', p::mb_lcfirst('', 'UTF-8'));
+        $this->assertSame('ａＢＳ', p::mb_lcfirst('ＡＢＳ', 'UTF-8'));
+        $this->assertSame('xin chào', p::mb_lcfirst('Xin chào', 'UTF-8'));
+        $this->assertSame('đẹp quá!', p::mb_lcfirst('Đẹp quá!', 'UTF-8'));
+    }
+
+    /**
+     * @covers \Symfony\Polyfill\Mbstring\Mbstring::mb_ucfirst
+     */
+    public function test_mb_ucfirst(): void
+    {
+        $this->assertSame('', p::mb_ucfirst('', 'UTF-8'));
+        $this->assertSame('Ａｂ', p::mb_ucfirst('ａｂ', 'UTF-8'));
+        $this->assertSame('ＡＢＳ', p::mb_ucfirst('ＡＢＳ', 'UTF-8'));
+        $this->assertSame('Đắt quá!', p::mb_ucfirst('đắt quá!', 'UTF-8'));
+        $this->assertSame('აბგ', p::mb_ucfirst('აბგ', 'UTF-8'));
+        $this->assertSame('ǈ', p::mb_ucfirst('ǉ', 'UTF-8'));
+    }
 }
