@@ -105,7 +105,12 @@ class MbstringTest extends TestCase
         $this->assertSame('déjà &#0; â ã', mb_decode_numericentity('déjà &#0; &#225; &#226;', $convmap, 'UTF-8'));
 
         $bogusDecEntities = 'déjà &#0; &#225;&#225; &#&#225&#225 &#225 &#225t';
-        $this->assertSame('déjà &#0; ââ &#&#225â â ât', mb_decode_numericentity($bogusDecEntities, $convmap, 'UTF-8'));
+        if (80200 > \PHP_VERSION_ID) {
+            $this->assertSame('déjà &#0; ââ &#&#225â â ât', mb_decode_numericentity($bogusDecEntities, $convmap, 'UTF-8'));
+        } else {
+            $this->assertSame('déjà &#0; ââ &#ââ â ât', mb_decode_numericentity($bogusDecEntities, $convmap, 'UTF-8'));
+            // Is "déjà &#0; àà &#àà à àt" correct?
+        }
 
         $bogusHexEntities = 'déjà &#x0; &#xe1;&#xe1; &#xe1 &#xe1t &#xE1 &#xE1t';
         $this->assertSame('déjà &#x0; ââ â ât â ât', mb_decode_numericentity($bogusHexEntities, $convmap, 'UTF-8'));
