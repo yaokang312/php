@@ -837,17 +837,8 @@ final class Mbstring
 
         if (null === $encoding) {
             $encoding = self::mb_internal_encoding();
-        }
-
-        try {
-            $validEncoding = @self::mb_check_encoding('', $encoding);
-        } catch (\ValueError $e) {
-            throw new \ValueError(sprintf('mb_str_pad(): Argument #5 ($encoding) must be a valid encoding, "%s" given', $encoding));
-        }
-
-        // BC for PHP 7.3 and lower
-        if (!$validEncoding) {
-            throw new \ValueError(sprintf('mb_str_pad(): Argument #5 ($encoding) must be a valid encoding, "%s" given', $encoding));
+        } else {
+            self::assertEncoding($encoding, 'mb_str_pad(): Argument #5 ($encoding) must be a valid encoding, "%s" given');
         }
 
         if (self::mb_strlen($pad_string, $encoding) <= 0) {
@@ -877,17 +868,8 @@ final class Mbstring
     {
         if (null === $encoding) {
             $encoding = self::mb_internal_encoding();
-        }
-
-        try {
-            $validEncoding = @self::mb_check_encoding('', $encoding);
-        } catch (\ValueError $e) {
-            throw new \ValueError(sprintf('mb_ucfirst(): Argument #2 ($encoding) must be a valid encoding, "%s" given', $encoding));
-        }
-
-        // BC for PHP 7.3 and lower
-        if (!$validEncoding) {
-            throw new \ValueError(sprintf('mb_ucfirst(): Argument #2 ($encoding) must be a valid encoding, "%s" given', $encoding));
+        } else {
+            self::assertEncoding($encoding, 'mb_ucfirst(): Argument #2 ($encoding) must be a valid encoding, "%s" given');
         }
 
         $firstChar = mb_substr($string, 0, 1, $encoding);
@@ -900,18 +882,10 @@ final class Mbstring
     {
         if (null === $encoding) {
             $encoding = self::mb_internal_encoding();
+        } else {
+            self::assertEncoding($encoding, 'mb_lcfirst(): Argument #2 ($encoding) must be a valid encoding, "%s" given');
         }
 
-        try {
-            $validEncoding = @self::mb_check_encoding('', $encoding);
-        } catch (\ValueError $e) {
-            throw new \ValueError(sprintf('mb_lcfirst(): Argument #2 ($encoding) must be a valid encoding, "%s" given', $encoding));
-        }
-
-        // BC for PHP 7.3 and lower
-        if (!$validEncoding) {
-            throw new \ValueError(sprintf('mb_lcfirst(): Argument #2 ($encoding) must be a valid encoding, "%s" given', $encoding));
-        }
         $firstChar = mb_substr($string, 0, 1, $encoding);
         $firstChar = mb_convert_case($firstChar, MB_CASE_LOWER, $encoding);
 
@@ -990,5 +964,19 @@ final class Mbstring
         }
 
         return $encoding;
+    }
+
+    private static function assertEncoding(string $encoding, string $errorFormat): void
+    {
+        try {
+            $validEncoding = @self::mb_check_encoding('', $encoding);
+        } catch (\ValueError $e) {
+            throw new \ValueError(\sprintf($errorFormat, $encoding));
+        }
+
+        // BC for PHP 7.3 and lower
+        if (!$validEncoding) {
+            throw new \ValueError(\sprintf($errorFormat, $encoding));
+        }
     }
 }
