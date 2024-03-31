@@ -521,7 +521,7 @@ class MbstringTest extends TestCase
     {
         $this->assertTrue(mb_detect_order('ASCII, UTF-8'));
         $this->assertSame('ASCII', mb_detect_encoding('abc'));
-        $this->assertSame('UTF-8', mb_detect_encoding('abc', 'UTF8, ASCII'));
+        $this->assertSame('UTF-8', mb_detect_encoding('abc', 'UTF-8, ASCII'));
         $this->assertSame('ISO-8859-1', mb_detect_encoding("\xE9", ['UTF-8', 'ASCII', 'ISO-8859-1'], true));
         $this->assertFalse(mb_detect_encoding("\xE9", ['UTF-8', 'ASCII'], true));
     }
