@@ -1,0 +1,27 @@
+---------------------------------------------------------------------------
+
+by derrabus at 2023-11-07T03:34:03Z
+
+Can we add a test?
+
+---------------------------------------------------------------------------
+
+by stof at 2023-11-07T08:47:58Z
+
+I don't think we should add options that don't exist in PHP. This would defeat the purpose of this library.
+
+---------------------------------------------------------------------------
+
+by TRowbotham at 2023-11-08T23:41:32Z
+
+I have decided to remove the "IgnoreInvalidPunycode" option as suggested since the option is not available in PHP.
+
+---------------------------------------------------------------------------
+
+by TRowbotham at 2024-01-30T22:45:51Z
+
+> I fixed my CS comments by force-pushing on your fork. Tests would still be welcome. And I have one question (see inline comments). Are you still interested in finishing this PR?
+
+Yes, sorry, haven't had a lot of free time lately.  I'll try to put some tests together this week.
+
+Thanks for taking care of the style issues.
