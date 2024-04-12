@@ -1,0 +1,5 @@
+---------------------------------------------------------------------------
+
+by Ayesh at 2024-03-31T08:35:43Z
+
+Thanks a lot for the review @zonuexe those were great. I addressed all the points except the `else` block remark, mainly to make sure we follow the other polyfill methods, although there is indeed a merit if that changes. Perhaps it's something we can do for all methods in a separate PR?
