@@ -78,6 +78,30 @@ class MbstringTest extends TestCase
     }
 
     /**
+     * @covers \Symfony\Polyfill\Mbstring\Mbstring::mb_convert_encoding
+     *
+     * @requires PHP 7.2
+     */
+    public function testConvertEncodingWithArrayValue()
+    {
+        $this->assertSame(['déjà', 'là'], mb_convert_encoding(['d&eacute;j&#224;', 'l&#224;'], 'Utf-8', 'Html-entities'));
+    }
+
+    /**
+     * @covers \Symfony\Polyfill\Mbstring\Mbstring::mb_convert_encoding
+     *
+     * @requires PHP < 7.2
+     */
+    public function testConvertEncodingWithArrayValueForPhpLessThan72()
+    {
+        $errorMessage = null;
+        set_error_handler(function ($type, $msg, $file, $line) use (&$errorMessage) { $errorMessage = \E_USER_WARNING === $type || \E_WARNING === $type ? $msg : null; });
+        $this->assertNull(mb_convert_encoding(['d&eacute;j&#224;', 'l&#224;'], 'Utf-8', 'Html-entities'));
+        restore_error_handler();
+        $this->assertSame('mb_convert_encoding() expects parameter 1 to be string, array given', $errorMessage);
+    }
+
+    /**
      * @covers \Symfony\Polyfill\Mbstring\Mbstring::mb_decode_numericentity
      */
     public function testDecodeNumericEntity()
