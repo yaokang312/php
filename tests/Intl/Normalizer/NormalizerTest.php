@@ -20,6 +20,7 @@ use Symfony\Polyfill\Util\TestListenerTrait;
  * @author Nicolas Grekas <p@tchwork.com>
  *
  * @covers \Symfony\Polyfill\Intl\Normalizer\Normalizer::<!public>
+ *
  * @requires extension intl
  */
 class NormalizerTest extends TestCase
@@ -68,7 +69,7 @@ class NormalizerTest extends TestCase
     {
         $c = in::normalize('déjà', pn::NFC).in::normalize('훈쇼™', pn::NFD);
         if (\PHP_VERSION_ID < 70300) {
-            $this->assertSame($c, normalizer_normalize($c, \Normalizer::NONE));
+            $this->assertSame($c, normalizer_normalize($c, in::NONE));
         }
 
         $c = 'déjà 훈쇼™';

@@ -11,7 +11,6 @@
 
 namespace Symfony\Polyfill\Tests\Php74;
 
-use ArrayObject;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -54,6 +53,7 @@ class Php74Test extends TestCase
 
     /**
      * @covers \Symfony\Polyfill\Php74\Php74::get_mangled_object_vars
+     *
      * @requires PHP < 8
      */
     public function testGetMangledObjectVarsOnNonObject()
@@ -101,6 +101,7 @@ class Php74Test extends TestCase
 
     /**
      * @covers \Symfony\Polyfill\Php74\Php74::mb_str_split
+     *
      * @requires PHP < 8
      */
     public function testStrSplitWithInvalidValues()
@@ -127,7 +128,7 @@ class B extends A
     private $priv = 4;
 }
 
-class AO extends ArrayObject
+class AO extends \ArrayObject
 {
     private $priv = 1;
 

@@ -12,7 +12,6 @@
 namespace Symfony\Polyfill\Tests\Intl\Idn;
 
 use PHPUnit\Framework\TestCase;
-use RuntimeException;
 use Symfony\Polyfill\Intl\Idn\Idn;
 
 /**
@@ -198,7 +197,9 @@ class IdnTest extends TestCase
 
     /**
      * @requires PHP < 8
+     *
      * @group legacy
+     *
      * @dataProvider domainNamesProvider
      */
     public function testEncode2003($decoded, $encoded)
@@ -218,7 +219,9 @@ class IdnTest extends TestCase
 
     /**
      * @requires PHP < 8
+     *
      * @group legacy
+     *
      * @dataProvider domainNamesProvider
      */
     public function testDecode2003($decoded, $encoded)
@@ -275,7 +278,9 @@ class IdnTest extends TestCase
 
     /**
      * @requires PHP < 8
+     *
      * @group legacy
+     *
      * @dataProvider domainNamesProvider
      */
     public function testEncodePhp53($decoded, $encoded)
@@ -285,7 +290,7 @@ class IdnTest extends TestCase
     }
 
     /**
-     * IDNA 15.1.0 revision 31
+     * IDNA 15.1.0 revision 31.
      *
      * This tests the change in "Section 4 Processing step 1. Map" which conditionally maps U+1E9E capital sharp s to
      * "ss" if Transitional_Processing is used.
@@ -299,7 +304,7 @@ class IdnTest extends TestCase
     }
 
     /**
-     * IDNA 15.1.0 revision 31
+     * IDNA 15.1.0 revision 31.
      *
      * This tests the additional validity check in "Section 4.1 Validity Criteria Processing step 4", which is used to
      * disallow labels that do not round trip.
@@ -312,14 +317,14 @@ class IdnTest extends TestCase
     }
 
     /**
-     * IDNA 15.1.0 revision 31
+     * IDNA 15.1.0 revision 31.
      *
      * This tests the the additional condition in "Section 4 Processing step 4.1" where a label that starts with "xn--"
      * and contains a non-ASCII codepoint records an error and the processing steps continue with the next label.
      */
     public function testLabelStartingWithPunycodePrefixWithNonAsciiCharacterRecordsErrorAndIsSkipped()
     {
-        \idn_to_utf8('xn--🌈.xn--fa-hia.de', \IDNA_DEFAULT, \INTL_IDNA_VARIANT_UTS46, $info);
+        idn_to_utf8('xn--🌈.xn--fa-hia.de', \IDNA_DEFAULT, \INTL_IDNA_VARIANT_UTS46, $info);
         $this->assertSame(\IDNA_ERROR_PUNYCODE, \IDNA_ERROR_PUNYCODE & $info['errors']);
         $this->assertSame('xn--🌈.faß.de', $info['result']);
     }
@@ -331,7 +336,6 @@ class IdnTest extends TestCase
             ['Faß.de', 'faß.de', \IDNA_NONTRANSITIONAL_TO_UNICODE],
         ];
     }
-
 
     public static function domainNamesProvider()
     {
@@ -489,11 +493,11 @@ class IdnTest extends TestCase
         $matchCount = preg_match_all('/[PVUABCX][0-9](?:_[0-9])?/', $statusCodes, $matches);
 
         if (\PREG_NO_ERROR !== preg_last_error()) {
-            throw new RuntimeException();
+            throw new \RuntimeException();
         }
 
         if (0 === $matchCount) {
-            throw new RuntimeException();
+            throw new \RuntimeException();
         }
 
         $errors = [];

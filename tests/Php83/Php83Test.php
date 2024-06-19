@@ -278,14 +278,13 @@ class Php83Test extends TestCase
         str_increment($string);
     }
 
-
     public static function strInvalidIncrementProvider(): iterable
     {
-        yield ['str_increment(): Argument #1 ($string) cannot be empty', ""];
-        yield ['str_increment(): Argument #1 ($string) must be composed only of alphanumeric ASCII characters', "-cc"];
-        yield ['str_increment(): Argument #1 ($string) must be composed only of alphanumeric ASCII characters', "Z "];
-        yield ['str_increment(): Argument #1 ($string) must be composed only of alphanumeric ASCII characters', " Z"];
-        yield ['str_increment(): Argument #1 ($string) must be composed only of alphanumeric ASCII characters', "é"];
+        yield ['str_increment(): Argument #1 ($string) cannot be empty', ''];
+        yield ['str_increment(): Argument #1 ($string) must be composed only of alphanumeric ASCII characters', '-cc'];
+        yield ['str_increment(): Argument #1 ($string) must be composed only of alphanumeric ASCII characters', 'Z '];
+        yield ['str_increment(): Argument #1 ($string) must be composed only of alphanumeric ASCII characters', ' Z'];
+        yield ['str_increment(): Argument #1 ($string) must be composed only of alphanumeric ASCII characters', 'é'];
         yield ['str_increment(): Argument #1 ($string) must be composed only of alphanumeric ASCII characters', '我喜歡雞肉'];
         yield ['str_increment(): Argument #1 ($string) must be composed only of alphanumeric ASCII characters', 'α'];
         yield ['str_increment(): Argument #1 ($string) must be composed only of alphanumeric ASCII characters', 'ω'];
@@ -296,7 +295,6 @@ class Php83Test extends TestCase
         yield ['str_increment(): Argument #1 ($string) must be composed only of alphanumeric ASCII characters', 'foo.1.txt'];
         yield ['str_increment(): Argument #1 ($string) must be composed only of alphanumeric ASCII characters', '1.f.5'];
     }
-
 
     /**
      * @covers \Symfony\Polyfill\Php83\Php83::str_decrement

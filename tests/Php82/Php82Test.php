@@ -18,6 +18,7 @@ class Php82Test extends TestCase
     /**
      * @dataProvider provideConnectionStringValuesFromUpstream
      * @dataProvider provideMoreConnectionStringValues
+     *
      * @requires extension odbc
      */
     public function testConnectionStringIsQuoted(string $value, bool $isQuoted)
@@ -28,6 +29,7 @@ class Php82Test extends TestCase
     /**
      * @dataProvider provideConnectionStringValuesFromUpstream
      * @dataProvider provideMoreConnectionStringValues
+     *
      * @requires extension odbc
      */
     public function testConnectionStringShouldQuote(string $value, bool $isQuoted, bool $shouldQuote)
@@ -38,6 +40,7 @@ class Php82Test extends TestCase
     /**
      * @dataProvider provideConnectionStringValuesFromUpstream
      * @dataProvider provideMoreConnectionStringValues
+     *
      * @requires extension odbc
      */
     public function testConnectionStringQuote(string $value, bool $isQuoted, bool $shouldQuote, string $quoted)

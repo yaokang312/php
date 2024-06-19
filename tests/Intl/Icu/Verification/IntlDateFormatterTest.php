@@ -73,6 +73,7 @@ class IntlDateFormatterTest extends AbstractIntlDateFormatterTest
 
     /**
      * @requires PHP 8
+     *
      * @dataProvider relativeDateTypeProvider
      */
     public function testRelativeDateType($timestamp, $datetype, $timetype, $expected)
