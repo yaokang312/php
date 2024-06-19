@@ -72,6 +72,7 @@ class IconvTest extends TestCase
 
     /**
      * @covers \Symfony\Polyfill\Iconv\Iconv::iconv_substr
+     *
      * @requires PHP < 8
      */
     public function testIconvSubstrReturnsFalsePrePHP8()
@@ -84,6 +85,7 @@ class IconvTest extends TestCase
 
     /**
      * @covers \Symfony\Polyfill\Iconv\Iconv::iconv_substr
+     *
      * @requires PHP 8
      */
     public function testIconvSubstrReturnsEmptyPostPHP8()
@@ -169,6 +171,7 @@ HEADERS;
     /**
      * @covers \Symfony\Polyfill\Iconv\Iconv::iconv_get_encoding
      * @covers \Symfony\Polyfill\Iconv\Iconv::iconv_set_encoding
+     *
      * @group legacy
      */
     public function testIconvGetEncoding()

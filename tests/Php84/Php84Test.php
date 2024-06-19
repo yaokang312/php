@@ -19,46 +19,53 @@ class Php84Test extends TestCase
     /**
      * @dataProvider ucFirstDataProvider
      */
-    public function testMbUcFirst(string $string, string $expected): void {
+    public function testMbUcFirst(string $string, string $expected): void
+    {
         $this->assertSame($expected, mb_ucfirst($string));
     }
 
     /**
      * @dataProvider lcFirstDataProvider
      */
-    public function testMbLcFirst(string $string, string $expected): void {
+    public function testMbLcFirst(string $string, string $expected): void
+    {
         $this->assertSame($expected, mb_lcfirst($string));
     }
 
     /**
      * @dataProvider arrayFindDataProvider
      */
-    public function testArrayFind(array $array, callable $callback, $expected): void {
+    public function testArrayFind(array $array, callable $callback, $expected): void
+    {
         $this->assertSame($expected, array_find($array, $callback));
     }
 
     /**
      * @dataProvider arrayFindKeyDataProvider
      */
-    public function testArrayFindKey(array $array, callable $callback, $expected): void {
+    public function testArrayFindKey(array $array, callable $callback, $expected): void
+    {
         $this->assertSame($expected, array_find_key($array, $callback));
     }
 
     /**
      * @dataProvider arrayAnyDataProvider
      */
-    public function testArrayAny(array $array, callable $callback, bool $expected): void {
+    public function testArrayAny(array $array, callable $callback, bool $expected): void
+    {
         $this->assertSame($expected, array_any($array, $callback));
     }
 
     /**
      * @dataProvider arrayAllDataProvider
      */
-    public function testArrayAll(array $array, callable $callback, bool $expected): void {
+    public function testArrayAll(array $array, callable $callback, bool $expected): void
+    {
         $this->assertSame($expected, array_all($array, $callback));
     }
 
-    public static function ucFirstDataProvider(): array {
+    public static function ucFirstDataProvider(): array
+    {
         return [
             ['', ''],
             ['test', 'Test'],
@@ -71,14 +78,15 @@ class Php84Test extends TestCase
             ['ǉ', 'ǈ'],
             ["\u{01CA}", "\u{01CB}"],
             ["\u{01CA}\u{01CA}", "\u{01CB}\u{01CA}"],
-            ["łámał", "Łámał"],
+            ['łámał', 'Łámał'],
             // Full case-mapping and case-folding that changes the length of the string only supported
             // in PHP > 7.3.
-            ["ßst", PHP_VERSION_ID < 70300 ? "ßst" : "Ssst"],
+            ['ßst', \PHP_VERSION_ID < 70300 ? 'ßst' : 'Ssst'],
         ];
     }
 
-    public static function lcFirstDataProvider(): array {
+    public static function lcFirstDataProvider(): array
+    {
         return [
             ['', ''],
             ['test', 'test'],
@@ -88,18 +96,19 @@ class Php84Test extends TestCase
             ['ＡＢＳ', 'ａＢＳ'],
             ['Đắt quá!', 'đắt quá!'],
             ['აბგ', 'აბგ'],
-            ['ǈ', PHP_VERSION_ID < 70200 ? 'ǈ' : 'ǉ'],
-            ["\u{01CB}", PHP_VERSION_ID < 70200 ? "\u{01CB}" : "\u{01CC}"],
+            ['ǈ', \PHP_VERSION_ID < 70200 ? 'ǈ' : 'ǉ'],
+            ["\u{01CB}", \PHP_VERSION_ID < 70200 ? "\u{01CB}" : "\u{01CC}"],
             ["\u{01CA}", "\u{01CC}"],
             ["\u{01CA}\u{01CA}", "\u{01CC}\u{01CA}"],
             ["\u{212A}\u{01CA}", "\u{006b}\u{01CA}"],
-            ["ß", "ß"],
+            ['ß', 'ß'],
         ];
     }
 
-    public static function arrayFindDataProvider(): array {
+    public static function arrayFindDataProvider(): array
+    {
         $callable = function ($value): bool {
-            return strlen($value) > 2;
+            return \strlen($value) > 2;
         };
 
         $callableKey = function ($value, $key): bool {
@@ -115,9 +124,10 @@ class Php84Test extends TestCase
         ];
     }
 
-    public static function arrayFindKeyDataProvider(): array {
+    public static function arrayFindKeyDataProvider(): array
+    {
         $callable = function ($value): bool {
-            return strlen($value) > 2;
+            return \strlen($value) > 2;
         };
 
         $callableKey = function ($value, $key): bool {
@@ -133,9 +143,10 @@ class Php84Test extends TestCase
         ];
     }
 
-    public static function arrayAnyDataProvider(): array {
+    public static function arrayAnyDataProvider(): array
+    {
         $callable = function ($value): bool {
-            return strlen($value) > 2;
+            return \strlen($value) > 2;
         };
 
         $callableKey = function ($value, $key): bool {
@@ -152,9 +163,10 @@ class Php84Test extends TestCase
         ];
     }
 
-    public static function arrayAllDataProvider(): array {
+    public static function arrayAllDataProvider(): array
+    {
         $callable = function ($value): bool {
-            return strlen($value) > 2;
+            return \strlen($value) > 2;
         };
 
         $callableKey = function ($value, $key): bool {

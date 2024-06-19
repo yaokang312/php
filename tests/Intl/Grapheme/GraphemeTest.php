@@ -125,6 +125,7 @@ class GraphemeTest extends TestCase
 
     /**
      * @covers \Symfony\Polyfill\Intl\Grapheme\Grapheme::grapheme_substr
+     *
      * @requires PHP < 8
      */
     public function testGraphemeSubstrReturnsFalsePrePHP8()
@@ -138,6 +139,7 @@ class GraphemeTest extends TestCase
 
     /**
      * @covers \Symfony\Polyfill\Intl\Grapheme\Grapheme::grapheme_substr
+     *
      * @requires PHP 8
      */
     public function testGraphemeSubstrReturnsEmptyPostPHP8()

@@ -427,7 +427,7 @@ final class Mbstring
 
     public static function mb_check_encoding($var = null, $encoding = null)
     {
-        if (PHP_VERSION_ID < 70200 && \is_array($var)) {
+        if (\PHP_VERSION_ID < 70200 && \is_array($var)) {
             trigger_error('mb_check_encoding() expects parameter 1 to be string, array given', \E_USER_WARNING);
 
             return null;
@@ -454,7 +454,6 @@ final class Mbstring
         }
 
         return true;
-
     }
 
     public static function mb_detect_encoding($str, $encodingList = null, $strict = false)
@@ -888,9 +887,9 @@ final class Mbstring
         }
 
         $firstChar = mb_substr($string, 0, 1, $encoding);
-        $firstChar = mb_convert_case($firstChar, MB_CASE_TITLE, $encoding);
+        $firstChar = mb_convert_case($firstChar, \MB_CASE_TITLE, $encoding);
 
-        return $firstChar . mb_substr($string, 1, null, $encoding);
+        return $firstChar.mb_substr($string, 1, null, $encoding);
     }
 
     public static function mb_lcfirst(string $string, ?string $encoding = null): string
@@ -902,9 +901,9 @@ final class Mbstring
         }
 
         $firstChar = mb_substr($string, 0, 1, $encoding);
-        $firstChar = mb_convert_case($firstChar, MB_CASE_LOWER, $encoding);
+        $firstChar = mb_convert_case($firstChar, \MB_CASE_LOWER, $encoding);
 
-        return $firstChar . mb_substr($string, 1, null, $encoding);
+        return $firstChar.mb_substr($string, 1, null, $encoding);
     }
 
     private static function getSubpart($pos, $part, $haystack, $encoding)

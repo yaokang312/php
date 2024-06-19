@@ -143,6 +143,7 @@ class MbstringTest extends TestCase
 
     /**
      * @covers \Symfony\Polyfill\Mbstring\Mbstring::mb_decode_numericentity
+     *
      * @requires PHP < 8
      */
     public function testDecodeNumericEntityWithInvalidTypes()
@@ -220,6 +221,7 @@ class MbstringTest extends TestCase
 
     /**
      * @covers \Symfony\Polyfill\Mbstring\Mbstring::mb_encode_numericentity
+     *
      * @requires PHP < 8
      */
     public function testEncodeNumericEntityWithInvalidTypes()
@@ -393,6 +395,7 @@ class MbstringTest extends TestCase
 
     /**
      * @covers \Symfony\Polyfill\Mbstring\Mbstring::mb_strpos
+     *
      * @requires PHP < 8
      */
     public function testStrposEmptyDelimiter()
@@ -514,10 +517,8 @@ class MbstringTest extends TestCase
 
         $this->assertFalse(mb_check_encoding(['aςσb' => 'aςσb', "\xE9" => 'abc'], 'UTF8'));
 
-
         $this->assertTrue(mb_check_encoding(['aςσb' => 'aςσb', 'abc' => ['abc', 'aςσb']], 'UTF8'));
         $this->assertTrue(mb_check_encoding(['aςσb' => 'aςσb', 'abc' => ['abc' => 'abc', 'aςσb' => 'aςσb']], 'UTF8'));
-
 
         $this->assertFalse(mb_check_encoding(['aςσb' => 'aςσb', 'abc' => ['abc' => 'abc', 'aςσb' => "\xE9"]], 'UTF8'));
         $this->assertFalse(mb_check_encoding(['aςσb' => 'aςσb', 'abc' => ['abc' => 'abc', "\xE9" => 'aςσb']], 'UTF8'));
@@ -536,7 +537,6 @@ class MbstringTest extends TestCase
         restore_error_handler();
         $this->assertSame('mb_check_encoding() expects parameter 1 to be string, array given', $errorMessage);
     }
-
 
     /**
      * @covers \Symfony\Polyfill\Mbstring\Mbstring::mb_detect_encoding
@@ -684,14 +684,16 @@ class MbstringTest extends TestCase
     /**
      * @dataProvider ucFirstDataProvider
      */
-    public function testMbUcFirst(string $string, string $expected): void {
+    public function testMbUcFirst(string $string, string $expected): void
+    {
         $this->assertSame($expected, mb_ucfirst($string));
     }
 
     /**
      * @dataProvider lcFirstDataProvider
      */
-    public function testMbLcFirst(string $string, string $expected): void {
+    public function testMbLcFirst(string $string, string $expected): void
+    {
         $this->assertSame($expected, mb_lcfirst($string));
     }
 
@@ -766,7 +768,8 @@ class MbstringTest extends TestCase
         yield ['mb_str_pad(): Argument #5 ($encoding) must be a valid encoding, "unexisting" given', '▶▶', 6, ' ', \STR_PAD_BOTH, 'unexisting'];
     }
 
-    public static function ucFirstDataProvider(): array {
+    public static function ucFirstDataProvider(): array
+    {
         return [
             ['', ''],
             ['test', 'Test'],
@@ -779,14 +782,15 @@ class MbstringTest extends TestCase
             ['ǉ', 'ǈ'],
             ["\u{01CA}", "\u{01CB}"],
             ["\u{01CA}\u{01CA}", "\u{01CB}\u{01CA}"],
-            ["łámał", "Łámał"],
+            ['łámał', 'Łámał'],
             // Full case-mapping and case-folding that changes the length of the string only supported
             // in PHP > 7.3.
-            ["ßst", PHP_VERSION_ID < 70300 ? "ßst" : "Ssst"],
+            ['ßst', \PHP_VERSION_ID < 70300 ? 'ßst' : 'Ssst'],
         ];
     }
 
-    public static function lcFirstDataProvider(): array {
+    public static function lcFirstDataProvider(): array
+    {
         return [
             ['', ''],
             ['test', 'test'],
@@ -796,12 +800,12 @@ class MbstringTest extends TestCase
             ['ＡＢＳ', 'ａＢＳ'],
             ['Đắt quá!', 'đắt quá!'],
             ['აბგ', 'აბგ'],
-            ['ǈ', PHP_VERSION_ID < 70200 ? 'ǈ' : 'ǉ'],
-            ["\u{01CB}", PHP_VERSION_ID < 70200 ? "\u{01CB}" : "\u{01CC}"],
+            ['ǈ', \PHP_VERSION_ID < 70200 ? 'ǈ' : 'ǉ'],
+            ["\u{01CB}", \PHP_VERSION_ID < 70200 ? "\u{01CB}" : "\u{01CC}"],
             ["\u{01CA}", "\u{01CC}"],
             ["\u{01CA}\u{01CA}", "\u{01CC}\u{01CA}"],
             ["\u{212A}\u{01CA}", "\u{006b}\u{01CA}"],
-            ["ß", "ß"],
+            ['ß', 'ß'],
         ];
     }
 }

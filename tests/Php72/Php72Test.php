@@ -77,6 +77,7 @@ class Php72Test extends TestCase
 
     /**
      * @covers \Symfony\Polyfill\Php72\Php72::spl_object_id
+     *
      * @requires PHP < 8
      */
     public function testSplObjectIdWithInvalidType()
@@ -160,6 +161,7 @@ class Php72Test extends TestCase
 
     /**
      * @covers \Symfony\Polyfill\Php72\Php72::stream_isatty
+     *
      * @requires PHP < 8
      */
     public function testStreamIsattyWarnsOnInvalidInputType()

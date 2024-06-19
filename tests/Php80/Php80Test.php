@@ -23,6 +23,7 @@ class Php80Test extends TestCase
 {
     /**
      * @covers \Symfony\Polyfill\Php80\Php80::fdiv
+     *
      * @dataProvider fdivProvider
      */
     public function testFdiv($expected, $divident, $divisor)
@@ -39,6 +40,7 @@ class Php80Test extends TestCase
 
     /**
      * @covers \Symfony\Polyfill\Php80\Php80::fdiv
+     *
      * @dataProvider nanFdivProvider
      */
     public function testFdivNan($divident, $divisor)
@@ -52,6 +54,7 @@ class Php80Test extends TestCase
 
     /**
      * @covers \Symfony\Polyfill\Php80\Php80::fdiv
+     *
      * @dataProvider invalidFloatProvider
      */
     public function testFdivTypeError($divident, $divisor)
@@ -210,6 +213,7 @@ class Php80Test extends TestCase
 
     /**
      * @covers \Symfony\Polyfill\Php80\Php80::get_resource_id
+     *
      * @dataProvider invalidResourceProvider
      */
     public function testGetResourceWithInvalidValue($value)

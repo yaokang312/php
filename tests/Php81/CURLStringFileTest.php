@@ -40,7 +40,7 @@ class CURLStringFileTest extends TestCase
             proc_close(self::$server);
         }
     }
-    
+
     public function testCurlFileShowsContents(): void
     {
         $file = new \CURLStringFile('Hello', 'symfony.txt', 'text/plain');
@@ -48,12 +48,12 @@ class CURLStringFileTest extends TestCase
 
         $ch = curl_init('http://localhost:8086/curl-echo-server.php');
 
-        curl_setopt($ch, CURLOPT_POST,1);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, \CURLOPT_POST, 1);
+        curl_setopt($ch, \CURLOPT_POSTFIELDS, $data);
+        curl_setopt($ch, \CURLOPT_RETURNTRANSFER, 1);
         $response = curl_exec($ch);
 
-        $this->assertEquals(200, curl_getinfo($ch, CURLINFO_HTTP_CODE));
+        $this->assertEquals(200, curl_getinfo($ch, \CURLINFO_HTTP_CODE));
         $this->assertSame('{"test_file":{"name":"symfony.txt","type":"text\/plain","error":0,"size":5}}', $response);
     }
 }
