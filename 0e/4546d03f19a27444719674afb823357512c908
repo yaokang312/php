@@ -1,0 +1,7 @@
+---------------------------------------------------------------------------
+
+by Ayesh at 2024-06-02T09:29:37Z
+
+LGTM, you are the RFC author after all :)
+
+I also wrote a polyfill as a separate package, and used a [conditional declaration](https://github.com/PHP-Polyfills/array-find/blob/69874552b2c2c988585929d722e292a3a859e673/src/array_find.php#L52) to add the `mixed` return type only in PHP >=8.0
