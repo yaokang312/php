@@ -808,4 +808,127 @@ class MbstringTest extends TestCase
             ['ß', 'ß'],
         ];
     }
+
+    /**
+     * @covers \Symfony\Polyfill\Php84\Php84::mb_trim
+     *
+     * @dataProvider mbTrimProvider
+     */
+    public function testMbTrim(string $expected, string $string, ?string $characters = null, ?string $encoding = null): void
+    {
+        $this->assertSame($expected, mb_trim($string, $characters, $encoding));
+    }
+
+    /**
+     * @covers \Symfony\Polyfill\Php84\Php84::mb_ltrim
+     *
+     * @dataProvider mbLTrimProvider
+     */
+    public function testMbLTrim(string $expected, string $string, ?string $characters = null, ?string $encoding = null): void
+    {
+        $this->assertSame($expected, mb_ltrim($string, $characters, $encoding));
+    }
+
+    /**
+     * @covers \Symfony\Polyfill\Php84\Php84::mb_rtrim
+     *
+     * @dataProvider mbRTrimProvider
+     */
+    public function testMbRTrim(string $expected, string $string, ?string $characters = null, ?string $encoding = null): void
+    {
+        $this->assertSame($expected, mb_rtrim($string, $characters, $encoding));
+    }
+
+    public function testMbTrimException(): void
+    {
+        $this->expectException(\ValueError::class);
+        mb_trim("\u{180F}", '', 'NULL');
+    }
+
+    public function testMbTrimEncoding(): void
+    {
+        $this->assertSame('あ', mb_convert_encoding(mb_trim("\x81\x40\x82\xa0\x81\x40", "\x81\x40", 'SJIS'), 'UTF-8', 'SJIS'));
+        $this->assertSame('226f575b', bin2hex(mb_ltrim(mb_convert_encoding("\u{FFFE}漢字", 'UTF-16LE', 'UTF-8'), mb_convert_encoding("\u{FFFE}\u{FEFF}", 'UTF-16LE', 'UTF-8'), 'UTF-16LE')));
+        $this->assertSame('6f225b57', bin2hex(mb_ltrim(mb_convert_encoding("\u{FEFF}漢字", 'UTF-16BE', 'UTF-8'), mb_convert_encoding("\u{FFFE}\u{FEFF}", 'UTF-16BE', 'UTF-8'), 'UTF-16BE')));
+    }
+
+    public function testMbTrimCharactersEncoding(): void
+    {
+        $strUtf8 = "\u{3042}\u{3000}";
+
+        $this->assertSame(1, mb_strlen(mb_trim($strUtf8)));
+        $this->assertSame(1, mb_strlen(mb_trim($strUtf8, null, 'UTF-8')));
+
+        $old = mb_internal_encoding();
+        mb_internal_encoding('Shift_JIS');
+        $strSjis = mb_convert_encoding($strUtf8, 'Shift_JIS', 'UTF-8');
+
+        $this->assertSame(1, mb_strlen(mb_trim($strSjis)));
+        $this->assertSame(1, mb_strlen(mb_trim($strSjis, null, 'Shift_JIS')));
+        mb_internal_encoding($old);
+    }
+
+    public static function mbTrimProvider(): iterable
+    {
+        yield ['ABC', 'ABC'];
+        yield ['ABC', "\0\t\nABC \0\t\n"];
+        yield ["\0\t\nABC \0\t\n", "\0\t\nABC \0\t\n", ''];
+
+        yield ['', ''];
+
+        yield ['あいうえおあお', ' あいうえおあお ', ' ', 'UTF-8'];
+        yield ['foo BAR Spa', 'foo BAR Spaß', 'ß', 'UTF-8'];
+        yield ['oo BAR Spaß', 'oo BAR Spaß', 'f', 'UTF-8'];
+
+        yield ['oo BAR Spa', 'foo BAR Spaß', 'ßf', 'UTF-8'];
+        yield ['oo BAR Spa', 'foo BAR Spaß', 'fß', 'UTF-8'];
+        yield ['いうおえお', ' あいうおえお  あ', ' あ', 'UTF-8'];
+        yield ['いうおえお', ' あいうおえお  あ', 'あ ', 'UTF-8'];
+        yield [' あいうおえお ', ' あいうおえお a', 'あa', 'UTF-8'];
+        yield [' あいうおえお  a', ' あいうおえお  a', "\xe3", 'UTF-8'];
+
+        yield ['', str_repeat(' ', 129)];
+        yield ['a', str_repeat(' ', 129).'a'];
+
+        yield ['', " \f\n\r\v\x00\u{00A0}\u{1680}\u{2000}\u{2001}\u{2002}\u{2003}\u{2004}\u{2005}\u{2006}\u{2007}\u{2008}\u{2009}\u{200A}\u{2028}\u{2029}\u{202F}\u{205F}\u{3000}\u{0085}\u{180E}"];
+
+        yield [' abcd ', ' abcd ', ''];
+
+        yield ['f', 'foo', 'oo'];
+
+        yield ["foo\n", "foo\n", 'o'];
+    }
+
+    public static function mbLTrimProvider(): iterable
+    {
+        yield ['ABC', 'ABC'];
+        yield ["ABC \0\t\n", "\0\t\nABC \0\t\n"];
+        yield ["\0\t\nABC \0\t\n", "\0\t\nABC \0\t\n", ''];
+
+        yield ['', ''];
+
+        yield [' test ', ' test ', ''];
+
+        yield ['いああああ', 'あああああああああああああああああああああああああああああああああいああああ', 'あ'];
+
+        yield ['漢字', "\u{FFFE}漢字", "\u{FFFE}\u{FEFF}"];
+        yield [' abcd ', ' abcd ', ''];
+    }
+
+    public static function mbRTrimProvider(): iterable
+    {
+        yield ['ABC', 'ABC'];
+        yield ['ABC', "ABC \0\t\n"];
+        yield ["\0\t\nABC \0\t\n", "\0\t\nABC \0\t\n", ''];
+
+        yield ['', ''];
+
+        yield ['                                                                                                                                 a', str_repeat(' ', 129).'a'];
+
+        yield ['あああああああああああああああああああああああああああああああああい', 'あああああああああああああああああああああああああああああああああいああああ', 'あ'];
+
+        yield [' abcd ', ' abcd ', ''];
+
+        yield ["foo\n", "foo\n", 'o'];
+    }
 }
