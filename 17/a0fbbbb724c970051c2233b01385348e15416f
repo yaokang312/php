@@ -1,0 +1,11 @@
+---------------------------------------------------------------------------
+
+by Ayesh at 2024-03-31T08:38:55Z
+
+Upstream issue https://github.com/php/php-src/issues/13815 might affect the targets we are about to write polyfill for.
+
+---------------------------------------------------------------------------
+
+by zonuexe at 2024-04-24T08:21:24Z
+
+https://github.com/php/php-src/pull/13820 has been merged.
