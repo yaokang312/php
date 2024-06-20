@@ -41,7 +41,7 @@ class CURLStringFileTest extends TestCase
         }
     }
 
-    public function testCurlFileShowsContents(): void
+    public function testCurlFileShowsContents()
     {
         $file = new \CURLStringFile('Hello', 'symfony.txt', 'text/plain');
         $data = ['test_file' => $file];

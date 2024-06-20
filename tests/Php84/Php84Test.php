@@ -19,7 +19,7 @@ class Php84Test extends TestCase
     /**
      * @dataProvider ucFirstDataProvider
      */
-    public function testMbUcFirst(string $string, string $expected): void
+    public function testMbUcFirst(string $string, string $expected)
     {
         $this->assertSame($expected, mb_ucfirst($string));
     }
@@ -27,7 +27,7 @@ class Php84Test extends TestCase
     /**
      * @dataProvider lcFirstDataProvider
      */
-    public function testMbLcFirst(string $string, string $expected): void
+    public function testMbLcFirst(string $string, string $expected)
     {
         $this->assertSame($expected, mb_lcfirst($string));
     }
@@ -35,7 +35,7 @@ class Php84Test extends TestCase
     /**
      * @dataProvider arrayFindDataProvider
      */
-    public function testArrayFind(array $array, callable $callback, $expected): void
+    public function testArrayFind(array $array, callable $callback, $expected)
     {
         $this->assertSame($expected, array_find($array, $callback));
     }
@@ -43,7 +43,7 @@ class Php84Test extends TestCase
     /**
      * @dataProvider arrayFindKeyDataProvider
      */
-    public function testArrayFindKey(array $array, callable $callback, $expected): void
+    public function testArrayFindKey(array $array, callable $callback, $expected)
     {
         $this->assertSame($expected, array_find_key($array, $callback));
     }
@@ -51,7 +51,7 @@ class Php84Test extends TestCase
     /**
      * @dataProvider arrayAnyDataProvider
      */
-    public function testArrayAny(array $array, callable $callback, bool $expected): void
+    public function testArrayAny(array $array, callable $callback, bool $expected)
     {
         $this->assertSame($expected, array_any($array, $callback));
     }
@@ -59,7 +59,7 @@ class Php84Test extends TestCase
     /**
      * @dataProvider arrayAllDataProvider
      */
-    public function testArrayAll(array $array, callable $callback, bool $expected): void
+    public function testArrayAll(array $array, callable $callback, bool $expected)
     {
         $this->assertSame($expected, array_all($array, $callback));
     }
@@ -188,7 +188,7 @@ class Php84Test extends TestCase
      *
      * @dataProvider mbTrimProvider
      */
-    public function testMbTrim(string $expected, string $string, ?string $characters = null, ?string $encoding = null): void
+    public function testMbTrim(string $expected, string $string, ?string $characters = null, ?string $encoding = null)
     {
         $this->assertSame($expected, mb_trim($string, $characters, $encoding));
     }
@@ -198,7 +198,7 @@ class Php84Test extends TestCase
      *
      * @dataProvider mbLTrimProvider
      */
-    public function testMbLTrim(string $expected, string $string, ?string $characters = null, ?string $encoding = null): void
+    public function testMbLTrim(string $expected, string $string, ?string $characters = null, ?string $encoding = null)
     {
         $this->assertSame($expected, mb_ltrim($string, $characters, $encoding));
     }
@@ -208,25 +208,25 @@ class Php84Test extends TestCase
      *
      * @dataProvider mbRTrimProvider
      */
-    public function testMbRTrim(string $expected, string $string, ?string $characters = null, ?string $encoding = null): void
+    public function testMbRTrim(string $expected, string $string, ?string $characters = null, ?string $encoding = null)
     {
         $this->assertSame($expected, mb_rtrim($string, $characters, $encoding));
     }
 
-    public function testMbTrimException(): void
+    public function testMbTrimException()
     {
         $this->expectException(\ValueError::class);
         mb_trim("\u{180F}", '', 'NULL');
     }
 
-    public function testMbTrimEncoding(): void
+    public function testMbTrimEncoding()
     {
         $this->assertSame('あ', mb_convert_encoding(mb_trim("\x81\x40\x82\xa0\x81\x40", "\x81\x40", 'SJIS'), 'UTF-8', 'SJIS'));
         $this->assertSame('226f575b', bin2hex(mb_ltrim(mb_convert_encoding("\u{FFFE}漢字", 'UTF-16LE', 'UTF-8'), mb_convert_encoding("\u{FFFE}\u{FEFF}", 'UTF-16LE', 'UTF-8'), 'UTF-16LE')));
         $this->assertSame('6f225b57', bin2hex(mb_ltrim(mb_convert_encoding("\u{FEFF}漢字", 'UTF-16BE', 'UTF-8'), mb_convert_encoding("\u{FFFE}\u{FEFF}", 'UTF-16BE', 'UTF-8'), 'UTF-16BE')));
     }
 
-    public function testMbTrimCharactersEncoding(): void
+    public function testMbTrimCharactersEncoding()
     {
         $strUtf8 = "\u{3042}\u{3000}";
 
