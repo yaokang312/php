@@ -953,8 +953,8 @@ final class Mbstring
 
     private static function getData($file)
     {
-        if (file_exists($file = __DIR__.'/Resources/unidata/'.$file.'.php')) {
-            return require $file;
+        if (file_exists(__DIR__.'/Resources/unidata/'.$file.'.php')) {
+            return require __DIR__.'/Resources/unidata/'.$file.'.php';
         }
 
         return false;
