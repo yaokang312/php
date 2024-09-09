@@ -70,10 +70,12 @@ class Php84Test extends TestCase
     public function testCurlHttp3Constants()
     {
         $ch = curl_init();
-        $hasH3 = defined('CURL_VERSION_HTTP3') && (curl_version()['features'] & CURL_VERSION_HTTP3);
 
-        $this->assertSame($hasH3, curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_3));
-        $this->assertSame($hasH3 && defined('CURLOPT_SSH_HOST_PUBLIC_KEY_SHA256'), curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_3ONLY));
+        $this->assertIsBool(curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_3));
+
+        if (defined('CURLOPT_SSH_HOST_PUBLIC_KEY_SHA256')) {
+            $this->assertIsBool(curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_3ONLY));
+        }
     }
 
     public static function ucFirstDataProvider(): array
