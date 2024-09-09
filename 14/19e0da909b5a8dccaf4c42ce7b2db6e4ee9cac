@@ -1,0 +1,17 @@
+---------------------------------------------------------------------------
+
+by stof at 2024-07-30T12:16:05Z
+
+IIRC, allowing `null` was done to allow compatibility with the coalescing mode of PHP's type, which allows `null` (but deprecated) until PHP 9 for native functions
+
+---------------------------------------------------------------------------
+
+by nicolas-grekas at 2024-07-30T12:19:52Z
+
+@stof is right
+
+---------------------------------------------------------------------------
+
+by xabbuh at 2024-07-30T12:38:30Z
+
+makes sense, I added two additional entries to the map to satisfy the tests instead
