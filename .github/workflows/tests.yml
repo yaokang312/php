@@ -12,7 +12,6 @@ jobs:
 
         env:
             COMPOSER_ROOT_VERSION: 1.x-dev
-            SYMFONY_PHPUNIT_VERSION: 8.5
 
         strategy:
             matrix:
@@ -41,10 +40,12 @@ jobs:
                     tools: "composer:v2"
 
             -   name: Install dependencies
-                run: composer --prefer-source --no-progress --ansi install
+                run: |
+                    composer --prefer-source --no-progress --ansi install
+                    ./phpunit install
 
             -   name: Run tests
                 run: |
                     ok=0
-                    ./vendor/bin/simple-phpunit || ok=1
+                    ./phpunit || ok=1
                     [[ "${{ matrix.mode }}" = experimental ]] || (exit $ok)

@@ -21,7 +21,7 @@ foreach (['UnicodeData.txt', 'CompositionExclusions.txt', 'CaseFolding.txt', 'Sp
     file_put_contents(__DIR__.'/unicode/data/'.$file, $data);
 }
 
-$data = file_get_contents('https://github.com/unicode-org/cldr/raw/master/common/transforms/Latin-ASCII.xml');
+$data = file_get_contents('https://github.com/unicode-org/cldr/raw/main/common/transforms/Latin-ASCII.xml');
 file_put_contents(__DIR__.'/unicode/data/Latin-ASCII.xml', $data);
 
 Compiler::translitMap(__DIR__.'/../src/Iconv/Resources/charset/');

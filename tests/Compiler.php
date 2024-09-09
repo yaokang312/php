@@ -16,7 +16,7 @@ namespace Symfony\Polyfill\Internal;
  * and charset data to a format suitable for other Utf8 classes.
  *
  * See https://unicode.org/Public/UNIDATA/ for unicode data
- * See https://github.com/unicode-org/cldr/blob/master/common/transforms/ for Latin-ASCII.xml
+ * See https://github.com/unicode-org/cldr/blob/main/common/transforms/ for Latin-ASCII.xml
  *
  * @author Nicolas Grekas <p@tchwork.com>
  *

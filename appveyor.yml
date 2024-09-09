@@ -10,8 +10,8 @@ cache:
 init:
     - SET PATH=c:\php;%PATH%
     - SET COMPOSER_NO_INTERACTION=1
+    - SET COMPOSER_ROOT_VERSION=1.x-dev
     - SET PHP=1
-    - SET SYMFONY_PHPUNIT_VERSION=8.5
 
 install:
     - cinst wget
@@ -41,8 +41,8 @@ install:
     - appveyor DownloadFile https://github.com/composer/composer/releases/download/2.7.9/composer.phar
     - cd c:\projects\polyfill
     - mkdir %APPDATA%\Composer && copy /Y .github\composer-config.json %APPDATA%\Composer\config.json
-    - SET COMPOSER_ROOT_VERSION=1.x-dev
     - composer update --prefer-source --no-progress --ansi
+    - php -d allow_url_fopen=0 ./phpunit install
 
 test_script:
-    - php -d allow_url_fopen=0 ./vendor/symfony/phpunit-bridge/bin/simple-phpunit
+    - php -d allow_url_fopen=0 ./phpunit

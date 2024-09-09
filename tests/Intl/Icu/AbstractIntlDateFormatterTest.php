@@ -35,11 +35,11 @@ abstract class AbstractIntlDateFormatterTest extends TestCase
     {
         $formatter = $this->getDateFormatter('en', IntlDateFormatter::MEDIUM, IntlDateFormatter::SHORT);
 
-        $this->assertEquals(date_default_timezone_get(), $formatter->getTimeZoneId());
+        $this->assertSame(date_default_timezone_get(), $formatter->getTimeZoneId());
 
-        $this->assertEquals(
+        $this->assertSame(
             $this->getDateTime(0, $formatter->getTimeZoneId())->format('M j, Y, g:i A'),
-            $formatter->format(0)
+            str_replace("\u{202F}", ' ', $formatter->format(0))
         );
     }
 
@@ -50,7 +50,7 @@ abstract class AbstractIntlDateFormatterTest extends TestCase
     {
         $formatter = $this->getDateFormatter('en', null, IntlDateFormatter::SHORT, 'UTC', IntlDateFormatter::GREGORIAN);
 
-        $this->assertSame('EEEE, MMMM d, y \'at\' h:mm a', $formatter->getPattern());
+        $this->assertSame('EEEE, MMMM d, y \'at\' h:mm a', str_replace("\u{202F}", ' ', $formatter->getPattern()));
     }
 
     /**
@@ -60,7 +60,7 @@ abstract class AbstractIntlDateFormatterTest extends TestCase
     {
         $formatter = $this->getDateFormatter('en', IntlDateFormatter::SHORT, null, 'UTC', IntlDateFormatter::GREGORIAN);
 
-        $this->assertSame('M/d/yy, h:mm:ss a zzzz', $formatter->getPattern());
+        $this->assertSame('M/d/yy, h:mm:ss a zzzz', str_replace("\u{202F}", ' ', $formatter->getPattern()));
     }
 
     /**
@@ -498,7 +498,11 @@ abstract class AbstractIntlDateFormatterTest extends TestCase
         $datetime = \DateTime::createFromFormat('U', time(), new \DateTimeZone('GMT'));
         $datetime->setTime(0, 0, 0);
 
-        $this->assertSame('today at 12:00:00 AM Greenwich Mean Time', $formatter->format($datetime));
+        $formatted = $formatter->format($datetime);
+        $formatted = str_replace(' at ', ', ', $formatted);
+        $formatted = str_replace("\u{202F}", ' ', $formatted);
+
+        $this->assertSame('today, 12:00:00 AM Greenwich Mean Time', $formatted);
     }
 
     /**
@@ -507,7 +511,7 @@ abstract class AbstractIntlDateFormatterTest extends TestCase
     public function testDateAndTimeType($timestamp, $datetype, $timetype, $expected)
     {
         $formatter = $this->getDateFormatter('en', $datetype, $timetype, 'UTC');
-        $this->assertSame($expected, $formatter->format($timestamp));
+        $this->assertSame($expected, str_replace("\u{202F}", ' ', $formatter->format($timestamp)));
     }
 
     public static function dateAndTimeTypeProvider()
@@ -533,7 +537,14 @@ abstract class AbstractIntlDateFormatterTest extends TestCase
         $datetime->setTime(0, 0, 0);
 
         $formatter = $this->getDateFormatter('en', $datetype, $timetype, 'UTC');
-        $this->assertSame($expected, $formatter->format($datetime));
+
+        $formatted = $formatter->format($datetime);
+
+        // Ignore differences that vary by version of PHP or ICU
+        $formatted = str_replace(' at ', ', ', $formatted);
+        $formatted = str_replace("\u{202F}", ' ', $formatted);
+
+        $this->assertSame($expected, $formatted);
     }
 
     public static function relativeDateTypeProvider()
@@ -545,17 +556,17 @@ abstract class AbstractIntlDateFormatterTest extends TestCase
             [0, IntlDateFormatter::RELATIVE_SHORT, IntlDateFormatter::NONE, '1/1/70'],
 
             [time(), IntlDateFormatter::RELATIVE_FULL, IntlDateFormatter::NONE, 'today'],
-            [time(), IntlDateFormatter::RELATIVE_LONG, IntlDateFormatter::FULL, 'today at 12:00:00 AM Coordinated Universal Time'],
+            [time(), IntlDateFormatter::RELATIVE_LONG, IntlDateFormatter::FULL, 'today, 12:00:00 AM Coordinated Universal Time'],
             [time(), IntlDateFormatter::RELATIVE_MEDIUM, IntlDateFormatter::LONG, 'today, 12:00:00 AM UTC'],
             [time(), IntlDateFormatter::RELATIVE_SHORT, IntlDateFormatter::SHORT, 'today, 12:00 AM'],
 
             [strtotime('-1 day', time()), IntlDateFormatter::RELATIVE_FULL, IntlDateFormatter::NONE, 'yesterday'],
-            [strtotime('-1 day', time()), IntlDateFormatter::RELATIVE_LONG, IntlDateFormatter::FULL, 'yesterday at 12:00:00 AM Coordinated Universal Time'],
+            [strtotime('-1 day', time()), IntlDateFormatter::RELATIVE_LONG, IntlDateFormatter::FULL, 'yesterday, 12:00:00 AM Coordinated Universal Time'],
             [strtotime('-1 day', time()), IntlDateFormatter::RELATIVE_MEDIUM, IntlDateFormatter::LONG, 'yesterday, 12:00:00 AM UTC'],
             [strtotime('-1 day', time()), IntlDateFormatter::RELATIVE_SHORT, IntlDateFormatter::SHORT, 'yesterday, 12:00 AM'],
 
             [strtotime('+1 day', time()), IntlDateFormatter::RELATIVE_FULL, IntlDateFormatter::NONE, 'tomorrow'],
-            [strtotime('+1 day', time()), IntlDateFormatter::RELATIVE_LONG, IntlDateFormatter::FULL, 'tomorrow at 12:00:00 AM Coordinated Universal Time'],
+            [strtotime('+1 day', time()), IntlDateFormatter::RELATIVE_LONG, IntlDateFormatter::FULL, 'tomorrow, 12:00:00 AM Coordinated Universal Time'],
             [strtotime('+1 day', time()), IntlDateFormatter::RELATIVE_MEDIUM, IntlDateFormatter::LONG, 'tomorrow, 12:00:00 AM UTC'],
             [strtotime('+1 day', time()), IntlDateFormatter::RELATIVE_SHORT, IntlDateFormatter::SHORT, 'tomorrow, 12:00 AM'],
         ];
