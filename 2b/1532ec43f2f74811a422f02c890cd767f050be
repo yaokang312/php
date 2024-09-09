@@ -1,0 +1,52 @@
+---------------------------------------------------------------------------
+
+by derrabus at 2024-09-09T09:42:19Z
+
+What has changed since #428?
+
+From Symfony's PoV, taking into account that the active maintenance of the 5.4 branch will end about two months from now, we might as well wait a little longer and bump to PHP 8.1 directly.
+
+---------------------------------------------------------------------------
+
+by nicolas-grekas at 2024-09-09T09:49:46Z
+
+I made this PR after realizing that #486 was required because on PHP 7.1 we have to use var-dumper 4.4, which didn't get the fixes for nullable arguments.
+Then I also realized that phpunit 8.5 has lifetime support and also php >= 7.2.
+The CI is behind at the moment with e.g. #425 + failures and I don't think it would be productive to work on this while also having to consider several versions of phpunit.
+
+PHP 8.1 is too early IMHO, at least I don't see similar arguments.
+
+---------------------------------------------------------------------------
+
+by derrabus at 2024-09-09T09:58:12Z
+
+If PHP 7.1 support really blocks our CI, go ahead then. But please, let's do one release of `polyfill-php72` as a no-op package as I proposed in https://github.com/symfony/polyfill/pull/492#discussion_r1749948439
+
+> PHP 8.1 is too early IMHO, at least I don't see similar arguments.
+
+Let's revisit that topic in December or January. 🙂
+
+---------------------------------------------------------------------------
+
+by nicolas-grekas at 2024-09-09T10:06:03Z
+
+> let's do one release of polyfill-php72 as a no-op package
+
+why did we do this? what's the benefit?
+people with php < 7.2 can still install a previous version
+
+---------------------------------------------------------------------------
+
+by derrabus at 2024-09-09T10:13:41Z
+
+> > let's do one release of polyfill-php72 as a no-op package
+>
+> why did we do this? what's the benefit?
+
+If you're on PHP >= 7.2, but one of your dependency's dependencies requires the polyfill, you get a package with zero overhead. Once we tagged a new release this way, we can still remove the package from the monorepo.
+
+---------------------------------------------------------------------------
+
+by nicolas-grekas at 2024-09-09T11:45:48Z
+
+Got it, thanks. PR updated.
