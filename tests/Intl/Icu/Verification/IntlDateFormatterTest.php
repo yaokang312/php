@@ -27,18 +27,6 @@ use Symfony\Polyfill\Tests\Intl\Icu\AbstractIntlDateFormatterTest;
 class IntlDateFormatterTest extends AbstractIntlDateFormatterTest
 {
     /**
-     * @dataProvider formatProvider
-     */
-    public function testFormat($pattern, $timestamp, $expected)
-    {
-        if (\PHP_VERSION_ID < 70105 && $timestamp instanceof \DateTimeImmutable) {
-            $this->markTestSkipped('PHP >= 7.1.5 required for DateTimeImmutable.');
-        }
-
-        parent::testFormat($pattern, $timestamp, $expected);
-    }
-
-    /**
      * @dataProvider formatTimezoneProvider
      */
     public function testFormatTimezone($pattern, $timezone, $expected)
@@ -72,8 +60,6 @@ class IntlDateFormatterTest extends AbstractIntlDateFormatterTest
     }
 
     /**
-     * @requires PHP 8
-     *
      * @dataProvider relativeDateTypeProvider
      */
     public function testRelativeDateType($timestamp, $datetype, $timetype, $expected)
@@ -85,9 +71,6 @@ class IntlDateFormatterTest extends AbstractIntlDateFormatterTest
         parent::testRelativeDateType($timestamp, $datetype, $timetype, $expected);
     }
 
-    /**
-     * @requires PHP 8
-     */
     public function testFormatIgnoresPatternForRelativeDateType()
     {
         if (version_compare(\INTL_ICU_VERSION, '59.1', '<')) {

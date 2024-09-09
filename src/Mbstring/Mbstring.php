@@ -160,7 +160,7 @@ final class Mbstring
             return null;
         }
 
-        if (!\is_array($convmap) || (80000 > \PHP_VERSION_ID && !$convmap)) {
+        if (!\is_array($convmap)) {
             return false;
         }
 
@@ -220,7 +220,7 @@ final class Mbstring
             return null;
         }
 
-        if (!\is_array($convmap) || (80000 > \PHP_VERSION_ID && !$convmap)) {
+        if (!\is_array($convmap)) {
             return false;
         }
 
@@ -378,10 +378,6 @@ final class Mbstring
             return true;
         }
 
-        if (80000 > \PHP_VERSION_ID) {
-            return false;
-        }
-
         throw new \ValueError(sprintf('Argument #1 ($encoding) must be a valid encoding, "%s" given', $encoding));
     }
 
@@ -397,10 +393,6 @@ final class Mbstring
                 self::$language = $normalizedLang;
 
                 return true;
-        }
-
-        if (80000 > \PHP_VERSION_ID) {
-            return false;
         }
 
         throw new \ValueError(sprintf('Argument #1 ($language) must be a valid language, "%s" given', $lang));
@@ -531,12 +523,6 @@ final class Mbstring
 
         $needle = (string) $needle;
         if ('' === $needle) {
-            if (80000 > \PHP_VERSION_ID) {
-                trigger_error(__METHOD__.': Empty delimiter', \E_USER_WARNING);
-
-                return false;
-            }
-
             return 0;
         }
 
@@ -563,7 +549,7 @@ final class Mbstring
             }
         }
 
-        $pos = '' !== $needle || 80000 > \PHP_VERSION_ID
+        $pos = '' !== $needle
             ? iconv_strrpos($haystack, $needle, $encoding)
             : self::mb_strlen($haystack, $encoding);
 
@@ -579,12 +565,6 @@ final class Mbstring
         }
 
         if (1 > $split_length = (int) $split_length) {
-            if (80000 > \PHP_VERSION_ID) {
-                trigger_error('The length of each segment must be greater than zero', \E_USER_WARNING);
-
-                return false;
-            }
-
             throw new \ValueError('Argument #2 ($length) must be greater than 0');
         }
 
@@ -630,9 +610,6 @@ final class Mbstring
         }
         if (0 === strcasecmp($c, 'none')) {
             return true;
-        }
-        if (80000 > \PHP_VERSION_ID) {
-            return false;
         }
         if (\is_int($c) || 'long' === $c || 'entity' === $c) {
             return false;

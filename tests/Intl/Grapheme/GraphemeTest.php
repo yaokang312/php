@@ -27,14 +27,7 @@ class GraphemeTest extends TestCase
     public function testGraphemeExtractArrayError()
     {
         grapheme_extract('', 0);
-        if (80000 > \PHP_VERSION_ID) {
-            $this->assertFalse(@grapheme_extract([], 0));
-
-            $this->expectWarning();
-            $this->expectWarningMessage('expects parameter 1 to be string, array given');
-        } else {
-            $this->expectException(\TypeError::class);
-        }
+        $this->expectException(\TypeError::class);
         grapheme_extract([], 0);
     }
 
@@ -66,12 +59,10 @@ class GraphemeTest extends TestCase
      */
     public function testGraphemeExtractWithInvalidType()
     {
-        if (80000 <= \PHP_VERSION_ID) {
-            $this->expectException(\ValueError::class);
-            $this->expectExceptionMessage('grapheme_extract(): Argument #3 ($type) must be one of GRAPHEME_EXTR_COUNT, GRAPHEME_EXTR_MAXBYTES, or GRAPHEME_EXTR_MAXCHARS');
-        }
+        $this->expectException(\ValueError::class);
+        $this->expectExceptionMessage('grapheme_extract(): Argument #3 ($type) must be one of GRAPHEME_EXTR_COUNT, GRAPHEME_EXTR_MAXBYTES, or GRAPHEME_EXTR_MAXCHARS');
 
-        $this->assertFalse(grapheme_extract('abc', 1, -1));
+        grapheme_extract('abc', 1, -1);
     }
 
     /**
@@ -104,16 +95,9 @@ class GraphemeTest extends TestCase
 
         $this->assertSame('jà', grapheme_substr($c, -2, null));
 
-        if (\PHP_VERSION_ID >= 80000) {
-            $this->assertSame('jà', grapheme_substr($c, -2, 3));
-            $this->assertSame('', grapheme_substr($c, -1, 0));
-            $this->assertSame('', grapheme_substr($c, 1, -4));
-        } else {
-            // See http://bugs.php.net/62759 and 55562
-            $this->assertSame('jà', grapheme_substr($c, -2, 3));
-            $this->assertSame('', grapheme_substr($c, -1, 0));
-            $this->assertFalse(grapheme_substr($c, 1, -4));
-        }
+        $this->assertSame('jà', grapheme_substr($c, -2, 3));
+        $this->assertSame('', grapheme_substr($c, -1, 0));
+        $this->assertSame('', grapheme_substr($c, 1, -4));
 
         $this->assertSame('jà', grapheme_substr($c, 2));
         $this->assertSame('jà', grapheme_substr($c, -2));
@@ -125,22 +109,6 @@ class GraphemeTest extends TestCase
 
     /**
      * @covers \Symfony\Polyfill\Intl\Grapheme\Grapheme::grapheme_substr
-     *
-     * @requires PHP < 8
-     */
-    public function testGraphemeSubstrReturnsFalsePrePHP8()
-    {
-        $c = 'déjà';
-        $this->assertFalse(grapheme_substr($c, 5, 1));
-        $this->assertFalse(grapheme_substr($c, -5, 1));
-        $this->assertFalse(grapheme_substr($c, -42, 1));
-        $this->assertFalse(grapheme_substr($c, 42, 5));
-    }
-
-    /**
-     * @covers \Symfony\Polyfill\Intl\Grapheme\Grapheme::grapheme_substr
-     *
-     * @requires PHP 8
      */
     public function testGraphemeSubstrReturnsEmptyPostPHP8()
     {
@@ -160,21 +128,13 @@ class GraphemeTest extends TestCase
      */
     public function testGraphemeStrpos()
     {
-        if (80000 > \PHP_VERSION_ID) {
-            $this->assertFalse(grapheme_strpos('abc', ''));
-        } else {
-            $this->assertSame(0, grapheme_strpos('abc', ''));
-        }
+        $this->assertSame(0, grapheme_strpos('abc', ''));
         $this->assertFalse(grapheme_strpos('abc', 'd'));
         $this->assertFalse(grapheme_strpos('abc', 'a', 3));
         $this->assertFalse(grapheme_strpos('abc', 'a', -1));
         $this->assertSame(1, grapheme_strpos('한국어', '국'));
         $this->assertSame(3, grapheme_stripos('DÉJÀ', 'à'));
-        if (80000 > \PHP_VERSION_ID) {
-            $this->assertFalse(grapheme_strrpos('한국어', ''));
-        } else {
-            $this->assertSame(3, grapheme_strrpos('한국어', ''));
-        }
+        $this->assertSame(3, grapheme_strrpos('한국어', ''));
         $this->assertSame(1, grapheme_strrpos('한국어', '국'));
         $this->assertSame(3, grapheme_strripos('DÉJÀ', 'à'));
     }

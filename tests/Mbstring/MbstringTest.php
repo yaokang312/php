@@ -42,10 +42,8 @@ class MbstringTest extends TestCase
      */
     public function testSubstituteCharacterWithInvalidCharacter()
     {
-        if (80000 <= \PHP_VERSION_ID) {
-            $this->expectException(\ValueError::class);
-            $this->expectExceptionMessage('Argument #1 ($substitute_character) must be "none", "long", "entity" or a valid codepoint');
-        }
+        $this->expectException(\ValueError::class);
+        $this->expectExceptionMessage('Argument #1 ($substitute_character) must be "none", "long", "entity" or a valid codepoint');
 
         $this->assertFalse(@mb_substitute_character('?'));
     }
@@ -55,10 +53,8 @@ class MbstringTest extends TestCase
      */
     public function testInternalEncodingWithInvalidEncoding()
     {
-        if (80000 <= \PHP_VERSION_ID) {
-            $this->expectException(\ValueError::class);
-            $this->expectExceptionMessage('Argument #1 ($encoding) must be a valid encoding, "no-no" given');
-        }
+        $this->expectException(\ValueError::class);
+        $this->expectExceptionMessage('Argument #1 ($encoding) must be a valid encoding, "no-no" given');
 
         $this->assertFalse(@mb_internal_encoding('no-no'));
     }
@@ -99,11 +95,7 @@ class MbstringTest extends TestCase
     public function testDecodeNumericEntity()
     {
         $convmap = [0x80, 0x10FFFF, 0x1, 0x1FFFFF];
-        if (80000 > \PHP_VERSION_ID) {
-            $this->assertFalse(@mb_decode_numericentity('déjà', [], 'UTF-8'));
-        } else {
-            $this->assertSame('déjà', mb_decode_numericentity('déjà', [], 'UTF-8'));
-        }
+        $this->assertSame('déjà', mb_decode_numericentity('déjà', [], 'UTF-8'));
 
         $this->assertSame('', mb_decode_numericentity('', $convmap, 'UTF-8'));
         $iso = 'déjà &amp; &225; &#E1; &#XE1; &#e1; &#Xe1;';
@@ -135,29 +127,10 @@ class MbstringTest extends TestCase
 
     /**
      * @covers \Symfony\Polyfill\Mbstring\Mbstring::mb_decode_numericentity
-     *
-     * @requires PHP < 8
-     */
-    public function testDecodeNumericEntityWithInvalidTypes()
-    {
-        $convmap = [0x80, 0x10FFFF, 0x1, 0x1FFFFF];
-
-        $this->assertNull(@mb_decode_numericentity(new \stdClass(), $convmap, 'UTF-8'));
-        $this->assertFalse(@mb_decode_numericentity('déjà', new \stdClass(), 'UTF-8'));
-        $this->assertEmpty(@mb_decode_numericentity('déjà', $convmap, new \stdClass()));  // PHPUnit returns null.
-    }
-
-    /**
-     * @covers \Symfony\Polyfill\Mbstring\Mbstring::mb_decode_numericentity
      */
     public function testDecodeNumericEntityWarnsOnInvalidInputType()
     {
-        if (80000 > \PHP_VERSION_ID) {
-            $this->expectWarning();
-            $this->expectWarningMessage('expects parameter 1 to be string');
-        } else {
-            $this->expectException(\TypeError::class);
-        }
+        $this->expectException(\TypeError::class);
         mb_decode_numericentity(new \stdClass(), [0x0, 0x10FFFF, 0x0, 0x1FFFFF], 'UTF-8');
     }
 
@@ -166,12 +139,7 @@ class MbstringTest extends TestCase
      */
     public function testDecodeNumericEntityWarnsOnInvalidEncodingType()
     {
-        if (80000 > \PHP_VERSION_ID) {
-            $this->expectWarning();
-            $this->expectWarningMessage('expects parameter 3 to be string');
-        } else {
-            $this->expectException(\TypeError::class);
-        }
+        $this->expectException(\TypeError::class);
         mb_decode_numericentity('déjà', [0x0, 0x10FFFF, 0x0, 0x1FFFFF], new \stdClass());
     }
 
@@ -181,11 +149,7 @@ class MbstringTest extends TestCase
     public function testEncodeNumericEntity()
     {
         $convmap = [0x80, 0x10FFFF, 0x1, 0x1FFFFF];
-        if (80000 > \PHP_VERSION_ID) {
-            $this->assertFalse(@mb_encode_numericentity('déjà', [], 'UTF-8'));
-        } else {
-            $this->assertSame('déjà', mb_encode_numericentity('déjà', [], 'UTF-8'));
-        }
+        $this->assertSame('déjà', mb_encode_numericentity('déjà', [], 'UTF-8'));
 
         $this->assertSame('', mb_encode_numericentity('', $convmap, 'UTF-8'));
         $iso = 'abc &amp; &#225; &#xe1; &#xE1;';
@@ -212,31 +176,11 @@ class MbstringTest extends TestCase
     }
 
     /**
-     * @covers \Symfony\Polyfill\Mbstring\Mbstring::mb_encode_numericentity
-     *
-     * @requires PHP < 8
-     */
-    public function testEncodeNumericEntityWithInvalidTypes()
-    {
-        $convmap = [0x80, 0x10FFFF, 0x1, 0x1FFFFF];
-
-        $this->assertNull(@mb_encode_numericentity(new \stdClass(), $convmap, 'UTF-8'));
-        $this->assertFalse(@mb_encode_numericentity('déjà', new \stdClass(), 'UTF-8'));
-        $this->assertNull(@mb_encode_numericentity('déjà', $convmap, new \stdClass()));
-        $this->assertNull(@mb_encode_numericentity('déjà', $convmap, 'UTF-8', new \stdClass()));
-    }
-
-    /**
      * @covers \Symfony\Polyfill\Mbstring\Mbstring::mb_decode_numericentity
      */
     public function testEncodeNumericEntityWarnsOnInvalidInputType()
     {
-        if (80000 > \PHP_VERSION_ID) {
-            $this->expectWarning();
-            $this->expectWarningMessage('expects parameter 1 to be string');
-        } else {
-            $this->expectException(\TypeError::class);
-        }
+        $this->expectException(\TypeError::class);
         mb_encode_numericentity(new \stdClass(), [0x0, 0x10FFFF, 0x0, 0x1FFFFF], 'UTF-8');
     }
 
@@ -245,12 +189,7 @@ class MbstringTest extends TestCase
      */
     public function testEncodeNumericEntityWarnsOnInvalidEncodingType()
     {
-        if (80000 > \PHP_VERSION_ID) {
-            $this->expectWarning();
-            $this->expectWarningMessage('expects parameter 3 to be string');
-        } else {
-            $this->expectException(\TypeError::class);
-        }
+        $this->expectException(\TypeError::class);
         mb_encode_numericentity('déjà', [0x0, 0x10FFFF, 0x0, 0x1FFFFF], new \stdClass());
     }
 
@@ -259,12 +198,7 @@ class MbstringTest extends TestCase
      */
     public function testEncodeNumericEntityWarnsOnInvalidIsHexType()
     {
-        if (80000 > \PHP_VERSION_ID) {
-            $this->expectWarning();
-            $this->expectWarningMessage('expects parameter 4 to be bool');
-        } else {
-            $this->expectException(\TypeError::class);
-        }
+        $this->expectException(\TypeError::class);
         mb_encode_numericentity('déjà', [0x0, 0x10FFFF, 0x0, 0x1FFFFF], 'UTF-8', new \stdClass());
     }
 
@@ -272,8 +206,6 @@ class MbstringTest extends TestCase
      * @covers \Symfony\Polyfill\Mbstring\Mbstring::mb_strtolower
      * @covers \Symfony\Polyfill\Mbstring\Mbstring::mb_strtoupper
      * @covers \Symfony\Polyfill\Mbstring\Mbstring::mb_convert_case
-     *
-     * @requires PHP 7.3
      */
     public function testStrCase()
     {
@@ -293,23 +225,6 @@ class MbstringTest extends TestCase
     public function testTitleCase()
     {
         for ($i = 1; $i < 127; ++$i) {
-            switch (\chr($i)) {
-                case '!':
-                case '"':
-                case '#':
-                case '%':
-                case '&':
-                case '*':
-                case ',':
-                case '/':
-                case ';':
-                case '?':
-                case '@':
-                case '\\':
-                    if (\PHP_VERSION_ID < 70300) {
-                        continue 2;
-                    }
-            }
             $this->assertSame(mb_convert_case('a'.\chr($i).'b', \MB_CASE_TITLE, 'UTF-8'), p::mb_convert_case('a'.\chr($i).'b', \MB_CASE_TITLE, 'UTF-8'), 'Title case for char 0x'.dechex($i));
         }
     }
@@ -362,40 +277,19 @@ class MbstringTest extends TestCase
      */
     public function testStrpos()
     {
-        if (80000 > \PHP_VERSION_ID) {
-            $this->assertFalse(@mb_strpos('abc', ''));
-        } else {
-            $this->assertSame(0, mb_strpos('abc', ''));
-        }
+        $this->assertSame(0, mb_strpos('abc', ''));
         $this->assertFalse(@mb_strpos('abc', 'a', -1));
         $this->assertFalse(mb_strpos('abc', 'd'));
         $this->assertFalse(mb_strpos('abc', 'a', 3));
         $this->assertSame(1, mb_strpos('한국어', '국'));
         $this->assertSame(3, mb_stripos('DÉJÀ', 'à'));
-        if (80000 > \PHP_VERSION_ID) {
-            $this->assertFalse(mb_strrpos('한국어', ''));
-        } else {
-            $this->assertSame(3, mb_strrpos('한국어', ''));
-        }
+        $this->assertSame(3, mb_strrpos('한국어', ''));
         $this->assertSame(1, mb_strrpos('한국어', '국'));
         $this->assertSame(3, mb_strripos('DÉJÀ', 'à'));
         $this->assertSame(1, mb_stripos('aςσb', 'ΣΣ'));
         $this->assertSame(1, mb_strripos('aςσb', 'ΣΣ'));
         $this->assertSame(3, mb_strrpos('ababab', 'b', -2));
         $this->assertSame(3, mb_strrpos('ababab', 'b', -3));
-    }
-
-    /**
-     * @covers \Symfony\Polyfill\Mbstring\Mbstring::mb_strpos
-     *
-     * @requires PHP < 8
-     */
-    public function testStrposEmptyDelimiter()
-    {
-        mb_strpos('abc', 'a');
-        $this->expectWarning();
-        $this->expectWarningMessage('Empty delimiter');
-        mb_strpos('abc', '');
     }
 
     /**
@@ -421,10 +315,6 @@ class MbstringTest extends TestCase
         $this->assertSame(['alpha', 'bet'], mb_str_split('alphabet', 5));
         $this->assertSame(['e', '́', '💩', '𐍈'], mb_str_split('é💩𐍈', 1, 'UTF-8'));
         $this->assertSame([], mb_str_split('', 1, 'UTF-8'));
-
-        if (80000 > \PHP_VERSION_ID) {
-            $this->assertNull(@mb_str_split([], 0));
-        }
     }
 
     /**
@@ -432,15 +322,8 @@ class MbstringTest extends TestCase
      */
     public function testStrSplitWithInvalidLength()
     {
-        if (80000 > \PHP_VERSION_ID) {
-            $this->assertFalse(@mb_str_split('победа', 0));
-
-            $this->expectWarning();
-            $this->expectWarningMessage('The length of each segment must be greater than zero');
-        } else {
-            $this->expectException(\ValueError::class);
-            $this->expectExceptionMessage('Argument #2 ($length) must be greater than 0');
-        }
+        $this->expectException(\ValueError::class);
+        $this->expectExceptionMessage('Argument #2 ($length) must be greater than 0');
 
         mb_str_split('победа', 0);
     }
@@ -551,12 +434,10 @@ class MbstringTest extends TestCase
      */
     public function testLanguageWithInvalidLanguage()
     {
-        if (80000 <= \PHP_VERSION_ID) {
-            $this->expectException(\ValueError::class);
-            $this->expectExceptionMessage('Argument #1 ($language) must be a valid language, "ABC" given');
-        }
+        $this->expectException(\ValueError::class);
+        $this->expectExceptionMessage('Argument #1 ($language) must be a valid language, "ABC" given');
 
-        $this->assertFalse(@mb_language('ABC'));
+        mb_language('ABC');
     }
 
     /**
@@ -637,10 +518,6 @@ class MbstringTest extends TestCase
      */
     public function testMbStrPad(string $expectedResult, string $string, int $length, string $padString, int $padType, ?string $encoding = null)
     {
-        if ('UTF-32' === $encoding && \PHP_VERSION_ID < 73000) {
-            $this->markTestSkipped('PHP < 7.3 doesn\'t handle UTF-32 encoding properly');
-        }
-
         $this->assertSame($expectedResult, mb_convert_encoding(mb_str_pad($string, $length, $padString, $padType, $encoding), 'UTF-8', $encoding ?? mb_internal_encoding()));
     }
 
@@ -761,7 +638,7 @@ class MbstringTest extends TestCase
             ['łámał', 'Łámał'],
             // Full case-mapping and case-folding that changes the length of the string only supported
             // in PHP > 7.3.
-            ['ßst', \PHP_VERSION_ID < 70300 ? 'ßst' : 'Ssst'],
+            ['ßst', 'Ssst'],
         ];
     }
 
@@ -776,8 +653,8 @@ class MbstringTest extends TestCase
             ['ＡＢＳ', 'ａＢＳ'],
             ['Đắt quá!', 'đắt quá!'],
             ['აბგ', 'აბგ'],
-            ['ǈ', \PHP_VERSION_ID < 70200 ? 'ǈ' : 'ǉ'],
-            ["\u{01CB}", \PHP_VERSION_ID < 70200 ? "\u{01CB}" : "\u{01CC}"],
+            ['ǈ', 'ǉ'],
+            ["\u{01CB}", "\u{01CC}"],
             ["\u{01CA}", "\u{01CC}"],
             ["\u{01CA}\u{01CA}", "\u{01CC}\u{01CA}"],
             ["\u{212A}\u{01CA}", "\u{006b}\u{01CA}"],

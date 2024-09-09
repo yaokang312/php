@@ -67,11 +67,6 @@ class NormalizerTest extends TestCase
      */
     public function testNormalize()
     {
-        $c = in::normalize('déjà', pn::NFC).in::normalize('훈쇼™', pn::NFD);
-        if (\PHP_VERSION_ID < 70300) {
-            $this->assertSame($c, normalizer_normalize($c, in::NONE));
-        }
-
         $c = 'déjà 훈쇼™';
         $d = in::normalize($c, pn::NFD);
         $kc = in::normalize($c, pn::NFKC);
@@ -95,10 +90,8 @@ class NormalizerTest extends TestCase
      */
     public function testNormalizeWithInvalidForm()
     {
-        if (80000 <= \PHP_VERSION_ID) {
-            $this->expectException(\ValueError::class);
-            $this->expectExceptionMessage('normalizer_normalize(): Argument #2 ($form) must be a a valid normalization form');
-        }
+        $this->expectException(\ValueError::class);
+        $this->expectExceptionMessage('normalizer_normalize(): Argument #2 ($form) must be a a valid normalization form');
 
         $this->assertFalse(normalizer_normalize('foo', -1));
     }

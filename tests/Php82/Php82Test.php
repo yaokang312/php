@@ -347,12 +347,6 @@ class Php82Test extends TestCase
      */
     public function testIniParseQuantityUsingBruteForce()
     {
-        if (\PHP_VERSION_ID < 80200) {
-            $this->markTestSkipped('This test requires the PHP function as a reference.');
-
-            return;
-        }
-
         // Comment these lines to run the tests.
         $this->markTestSkipped('This test is slow and should only be used for local development.');
 

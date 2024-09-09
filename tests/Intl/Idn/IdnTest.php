@@ -206,38 +206,12 @@ class IdnTest extends TestCase
     }
 
     /**
-     * @requires PHP < 8
-     *
-     * @group legacy
-     *
-     * @dataProvider domainNamesProvider
-     */
-    public function testEncode2003($decoded, $encoded)
-    {
-        $result = @idn_to_ascii($decoded, \IDNA_DEFAULT, \INTL_IDNA_VARIANT_2003);
-        $this->assertSame($encoded, $result);
-    }
-
-    /**
      * @dataProvider invalidUtf8DomainNamesProvider
      */
     public function testEncodeInvalid($decoded)
     {
         $result = idn_to_ascii($decoded, \IDNA_DEFAULT, \INTL_IDNA_VARIANT_UTS46);
         $this->assertFalse($result);
-    }
-
-    /**
-     * @requires PHP < 8
-     *
-     * @group legacy
-     *
-     * @dataProvider domainNamesProvider
-     */
-    public function testDecode2003($decoded, $encoded)
-    {
-        $result = @idn_to_utf8($encoded, \IDNA_DEFAULT, \INTL_IDNA_VARIANT_2003);
-        $this->assertSame($decoded, $result);
     }
 
     /**
@@ -284,19 +258,6 @@ class IdnTest extends TestCase
             'errors' => 0,
         ];
         $this->assertSame($expected, $info);
-    }
-
-    /**
-     * @requires PHP < 8
-     *
-     * @group legacy
-     *
-     * @dataProvider domainNamesProvider
-     */
-    public function testEncodePhp53($decoded, $encoded)
-    {
-        $result = @Idn::idn_to_ascii($decoded, \IDNA_DEFAULT, \INTL_IDNA_VARIANT_2003);
-        $this->assertSame($encoded, $result);
     }
 
     /**

@@ -12,6 +12,7 @@
 namespace Symfony\Polyfill\Util;
 
 use PHPUnit\Framework\SkippedTestError;
+use PHPUnit\Framework\TestSuite;
 use PHPUnit\Util\Test;
 use Symfony\Component\VarDumper\Caster\ReflectionCaster;
 use Symfony\Component\VarDumper\Cloner\Stub;
@@ -23,13 +24,19 @@ class TestListenerTrait
 {
     public static $enabledPolyfills;
 
-    public function startTestSuite($mainSuite)
+    public function startTestSuite(TestSuite $mainSuite)
     {
         $warnings = [];
 
         foreach ($mainSuite->tests() as $suite) {
             $testClass = $suite->getName();
-            if (!$tests = $suite->tests()) {
+            if (!class_exists($testClass)) {
+                $this->startTestSuite($suite);
+
+                continue;
+            }
+
+            if (!$suite->tests()) {
                 continue;
             }
             if (\in_array('class-polyfill', Test::getGroups($testClass), true)) {
@@ -48,8 +55,7 @@ class TestListenerTrait
                 continue;
             }
             $testedClass = new \ReflectionClass($m[1].$m[2]);
-            $bootstrap = \dirname($testedClass->getFileName()).'/bootstrap';
-            $bootstrap = new \SplFileObject($bootstrap.(\PHP_VERSION_ID >= 80000 && file_exists($bootstrap.'80.php') ? '80' : '').'.php');
+            $bootstrap = new \SplFileObject(\dirname($testedClass->getFileName()).'/bootstrap.php');
             $newWarnings = 0;
             $defLine = null;
 
@@ -114,7 +120,7 @@ function {$f['name']}{$f['signature']}
 EOPHP
                 );
 
-                if (\PHP_VERSION_ID >= 80000 && $r && false === strpos($bootstrap->getPath(), 'Php7') && false === strpos($bootstrap->getPath(), 'Php80')) {
+                if ($r) {
                     $originalSignature = ReflectionCaster::getSignature(ReflectionCaster::castFunctionAbstract($r, [], new Stub(), true));
                     $polyfillSignature = ReflectionCaster::castFunctionAbstract(new \ReflectionFunction($testNamespace.'\\'.$f['name']), [], new Stub(), true);
                     $polyfillSignature = ReflectionCaster::getSignature($polyfillSignature);
