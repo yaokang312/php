@@ -1,0 +1,67 @@
+---------------------------------------------------------------------------
+
+by stof at 2024-08-27T08:01:50Z
+
+Defining constants that cannot have effect would make the polyfilled case worse as it breaks feature detection without making the feature works. So -1 from me.
+
+---------------------------------------------------------------------------
+
+by nicolas-grekas at 2024-08-27T08:04:09Z
+
+> Defining constants that cannot have effect would make the polyfilled case worse
+
+Actually, passing the raw values does work. Curl accepts them (provided a recent enough version is installed). Only PHP doesn't expose these values as constants.
+
+---------------------------------------------------------------------------
+
+by Ayesh at 2024-08-27T08:37:37Z
+
+Thank you for the reviews @derrabus @stof.
+
+@derrabus you are right that declaring Curl constants gives a false pretense that the feature is available. However, all of our constant declarations are only dependent on libcurl and PHP version numbers; They do not check the availability of those features. Recent additions include DoH and HSTS support. The constants are declared as long as the Curl extension is compiled with the minimum require version or later, but it does not guarantee those features are available.
+
+For HTTP/3, the version check php-src uses is whether libcurl is >= v7.66. While most setups will have the libcurl version, it will not have HTTP/3 support because as of now, default builds for libcurl do not come with HTTP/3 support (checked on Fedora, Ubuntu and Debian). Even without HTTP/3 support, PHP 8.4 will have these constants declared.
+
+Like @nicolas-grekas said, any PHP version can use HTTP/3 if built with support for it.
+
+```php
+curl_setopt($ch, CURLOPT_HTTP_VERSION, 30); // returns false if HTTP/3 is not supported.
+```
+
+What the polyfill does is merely declare this as a proper constant. I think having this in the polyfill will can be helpful to avoid magic numbers.
+
+The technically correct way to check HTTP/3 availability would be:
+
+```
+$hasHttp3 = !empty(curl_version()['feature_list']['HTTP3']); // PHP 8.4+ only
+$hasHttp3 = curl_version()['features'] & 33554432); // or use CURL_VERSION_HTTP3 available on PHP 8.2.
+```
+
+That said, we cannot polyfill all Curl constants. We can't polyfill Curl options, but we should be able to polyfill Curl option _values_ where they make sense. For example, we [added](https://github.com/php/php-src/pull/13255) [`CURLOPT_PREREQFUNCTION`](https://php.watch/codex/CURLOPT_PREREQFUNCTION) for PHP 8.4 but we cannot technically polyfill it.
+
+---------------------------------------------------------------------------
+
+by derrabus at 2024-08-27T09:02:21Z
+
+> However, all of our constant declarations are only dependent on libcurl and PHP version numbers; They do not check the availability of those features.
+
+Understood. But this PR ignores the libcurl version and the availability of ext-curl completely.
+
+* Do we expect the constants to be declared if PHP is compiled without ext-curl?
+* Do we expect the constants to be declared if PHP is compiled against a libcurl older than 7.66?
+
+Let's look at how this is implemented in PHP:
+
+https://github.com/php/php-src/blob/3ed884fab73c5807fe2b3001ee79545c27ad5e70/ext/curl/curl_arginfo.h#L854-L856
+
+If I read that piece of code correctly, the answer to both questions should be no. But this is not what this PR implements.
+
+---------------------------------------------------------------------------
+
+by Ayesh at 2024-08-27T10:52:22Z
+
+Thank you for the pointers @nicolas-grekas @derrabus. I think you are right, it doesn't make sense to expose the constants on Curl < 7.66. I updated the PR to check for it and a `function_exists` check.
+
+`CURL_HTTP_VERSION_3ONLY` constant is Curl 7.88+, so I updated the declaration to check for it too.
+
+In my previous attempt, the bitmask check was to make sure Curl supports HTTP/3 with a `true` assertion. As @nicolas-grekas pointed out, I changed it to just check the Curl version regardless of the HTTP/3 availability of the underlying system. The check now makes sure the constant is declared and Curl accepted or rejected it with a `true` or `false` return value.
