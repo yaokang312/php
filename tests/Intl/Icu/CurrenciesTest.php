@@ -18,9 +18,6 @@ use PHPUnit\Framework\TestCase;
  */
 class CurrenciesTest extends TestCase
 {
-    /**
-     * @requires PHP 7.2
-     */
     public function testMetadata()
     {
         $dataDir = \dirname(__DIR__, 3).'/vendor/symfony/intl/Resources/data/currencies/';

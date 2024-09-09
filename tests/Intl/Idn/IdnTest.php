@@ -15,8 +15,6 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Polyfill\Intl\Idn\Idn;
 
 /**
- * @requires PHP 7.2
- *
  * @author Renan Gonçalves <renan.saddam@gmail.com>
  * @author Sebastian Kroczek <sk@xbug.de>
  * @author Dmitry Lukashin <dmitry@lukashin.ru>
