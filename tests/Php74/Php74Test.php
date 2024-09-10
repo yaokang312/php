@@ -123,11 +123,13 @@ class A
     private $priv = 3;
 }
 
+#[\AllowDynamicProperties]
 class B extends A
 {
     private $priv = 4;
 }
 
+#[\AllowDynamicProperties]
 class AO extends \ArrayObject
 {
     private $priv = 1;

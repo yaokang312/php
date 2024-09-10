@@ -122,8 +122,12 @@ class IdnTest extends TestCase
      */
     public function testToUnicode($source, $toUnicode, $toUnicodeStatus, $toAsciiN, $toAsciiNStatus, $toAsciiT, $toAsciiTStatus)
     {
+        if (\PHP_VERSION_ID >= 80400 && '' === $source) {
+            $this->expectException(\ValueError::class);
+        }
+
         $options = \IDNA_CHECK_BIDI | \IDNA_CHECK_CONTEXTJ | \IDNA_USE_STD3_RULES | \IDNA_NONTRANSITIONAL_TO_UNICODE;
-        $result = idn_to_utf8($source, $options, \INTL_IDNA_VARIANT_UTS46, $info);
+        idn_to_utf8($source, $options, \INTL_IDNA_VARIANT_UTS46, $info);
 
         if (null === $info) {
             $this->markTestSkipped('PHP Bug #72506.');
@@ -150,8 +154,12 @@ class IdnTest extends TestCase
      */
     public function testToAsciiNonTransitional($source, $toUnicode, $toUnicodeStatus, $toAsciiN, $toAsciiNStatus, $toAsciiT, $toAsciiTStatus)
     {
+        if (\PHP_VERSION_ID >= 80400 && '' === $source) {
+            $this->expectException(\ValueError::class);
+        }
+
         $options = \IDNA_CHECK_BIDI | \IDNA_CHECK_CONTEXTJ | \IDNA_USE_STD3_RULES | \IDNA_NONTRANSITIONAL_TO_ASCII;
-        $result = idn_to_ascii($source, $options, \INTL_IDNA_VARIANT_UTS46, $info);
+        idn_to_ascii($source, $options, \INTL_IDNA_VARIANT_UTS46, $info);
 
         if (null === $info) {
             $this->markTestSkipped('PHP Bug #72506.');
@@ -178,8 +186,12 @@ class IdnTest extends TestCase
      */
     public function testToAsciiTransitional($source, $toUnicode, $toUnicodeStatus, $toAsciiN, $toAsciiNStatus, $toAsciiT, $toAsciiTStatus)
     {
+        if (\PHP_VERSION_ID >= 80400 && '' === $source) {
+            $this->expectException(\ValueError::class);
+        }
+
         $options = \IDNA_CHECK_BIDI | \IDNA_CHECK_CONTEXTJ | \IDNA_USE_STD3_RULES;
-        $result = idn_to_ascii($source, $options, \INTL_IDNA_VARIANT_UTS46, $info);
+        idn_to_ascii($source, $options, \INTL_IDNA_VARIANT_UTS46, $info);
 
         if (null === $info) {
             $this->markTestSkipped('PHP Bug #72506.');

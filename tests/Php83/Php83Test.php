@@ -115,9 +115,9 @@ class Php83Test extends TestCase
 
     public static function mbStrPadInvalidArgumentsProvider(): iterable
     {
-        yield ['mb_str_pad(): Argument #3 ($pad_string) must be a non-empty string', '▶▶', 6, '', \STR_PAD_RIGHT];
-        yield ['mb_str_pad(): Argument #3 ($pad_string) must be a non-empty string', '▶▶', 6, '', \STR_PAD_LEFT];
-        yield ['mb_str_pad(): Argument #3 ($pad_string) must be a non-empty string', '▶▶', 6, '', \STR_PAD_BOTH];
+        yield ['mb_str_pad(): Argument #3 ($pad_string)', '▶▶', 6, '', \STR_PAD_RIGHT];
+        yield ['mb_str_pad(): Argument #3 ($pad_string)', '▶▶', 6, '', \STR_PAD_LEFT];
+        yield ['mb_str_pad(): Argument #3 ($pad_string)', '▶▶', 6, '', \STR_PAD_BOTH];
         yield ['mb_str_pad(): Argument #4 ($pad_type) must be STR_PAD_LEFT, STR_PAD_RIGHT, or STR_PAD_BOTH', '▶▶', 6, ' ', 123456];
         yield ['mb_str_pad(): Argument #5 ($encoding) must be a valid encoding, "unexisting" given', '▶▶', 6, ' ', \STR_PAD_BOTH, 'unexisting'];
     }
@@ -280,7 +280,7 @@ class Php83Test extends TestCase
 
     public static function strInvalidIncrementProvider(): iterable
     {
-        yield ['str_increment(): Argument #1 ($string) cannot be empty', ''];
+        yield ['str_increment(): Argument #1 ($string)', ''];
         yield ['str_increment(): Argument #1 ($string) must be composed only of alphanumeric ASCII characters', '-cc'];
         yield ['str_increment(): Argument #1 ($string) must be composed only of alphanumeric ASCII characters', 'Z '];
         yield ['str_increment(): Argument #1 ($string) must be composed only of alphanumeric ASCII characters', ' Z'];
@@ -311,7 +311,7 @@ class Php83Test extends TestCase
 
     public static function strInvalidDecrementProvider(): iterable
     {
-        yield ['str_decrement(): Argument #1 ($string) cannot be empty', ''];
+        yield ['str_decrement(): Argument #1 ($string)', ''];
         yield ['str_decrement(): Argument #1 ($string) must be composed only of alphanumeric ASCII characters', '我喜歡雞肉'];
         yield ['str_decrement(): Argument #1 ($string) "0" is out of decrement range', '0'];
         yield ['str_decrement(): Argument #1 ($string) "a" is out of decrement range', 'a'];
