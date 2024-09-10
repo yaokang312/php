@@ -1,0 +1,12 @@
+---------------------------------------------------------------------------
+
+by nicolas-grekas at 2024-09-10T10:39:08Z
+
+ValueError on PHP 8.4 is a regression, reported at https://github.com/php/php-src/issues/15824
+
+---------------------------------------------------------------------------
+
+by nicolas-grekas at 2024-09-10T14:49:00Z
+
+Tests fixed, they show some issues we now can wonder about.
+Help wanted @IonBazan @xabbuh @alexandre-daubois or anyone else really :)
