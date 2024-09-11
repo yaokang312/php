@@ -29,7 +29,7 @@ class IconvTest extends TestCase
         $this->assertFalse(@iconv('UTF-8', 'ISO-8859-1', 'nœud'));
         $this->assertSame('nud', iconv('UTF-8', 'ISO-8859-1//IGNORE', 'nœud'));
 
-        $this->assertSame(utf8_decode('déjà'), iconv('CP1252', 'ISO-8859-1', utf8_decode('déjà')));
+        $this->assertSame(mb_convert_encoding('déjà', 'ISO-8859-1', 'UTF-8'), iconv('CP1252', 'ISO-8859-1', mb_convert_encoding('déjà', 'ISO-8859-1', 'UTF-8')));
         $this->assertSame('deja noeud', p::iconv('UTF-8//ignore//IGNORE', 'US-ASCII//TRANSLIT//IGNORE//translit', 'déjà nœud'));
 
         $this->assertSame('4', iconv('UTF-8', 'UTF-8', 4));
@@ -38,16 +38,11 @@ class IconvTest extends TestCase
 
     /**
      * @covers \Symfony\Polyfill\Iconv\Iconv::iconv_strlen
-     * @covers \Symfony\Polyfill\Iconv\Iconv::strlen1
-     * @covers \Symfony\Polyfill\Iconv\Iconv::strlen2
      */
     public function testIconvStrlen()
     {
         $this->assertSame(4, iconv_strlen('déjà', 'UTF-8'));
         $this->assertSame(3, iconv_strlen('한국어', 'UTF-8'));
-
-        $this->assertSame(4, p::strlen2('déjà'));
-        $this->assertSame(3, p::strlen2('한국어'));
     }
 
     /**

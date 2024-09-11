@@ -68,13 +68,21 @@ class MbstringTest extends TestCase
      */
     public function testConvertEncoding()
     {
-        $this->assertSame(utf8_decode('déjà'), mb_convert_encoding('déjà', 'Windows-1252'));
+        $this->assertSame(iconv('UTF-8', 'ISO-8859-1', 'déjà'), mb_convert_encoding('déjà', 'Windows-1252'));
+        $this->assertSame('déjà', mb_convert_encoding(mb_convert_encoding('déjà', 'ISO-8859-1', 'UTF-8'), 'Utf-8', 'ASCII,ISO-2022-JP,UTF-8,ISO-8859-1'));
+        $this->assertSame('déjà', mb_convert_encoding(mb_convert_encoding('déjà', 'ISO-8859-1', 'UTF-8'), 'Utf-8', ['ASCII', 'ISO-2022-JP', 'UTF-8', 'ISO-8859-1']));
+    }
+
+    /**
+     * @group legacy
+     */
+    public function testConvertLegacyEncoding()
+    {
+        // handling base64 and html entities with mb_convert_encoding is deprecated in PHP 8.2
         $this->assertSame(base64_encode('déjà'), mb_convert_encoding('déjà', 'Base64'));
         $this->assertSame('&#23455;<&>d&eacute;j&agrave;', mb_convert_encoding('実<&>déjà', 'Html-entities'));
         $this->assertSame('déjà', mb_convert_encoding(base64_encode('déjà'), 'Utf-8', 'Base64'));
         $this->assertSame('déjà', mb_convert_encoding('d&eacute;j&#224;', 'Utf-8', 'Html-entities'));
-        $this->assertSame('déjà', mb_convert_encoding(utf8_decode('déjà'), 'Utf-8', 'ASCII,ISO-2022-JP,UTF-8,ISO-8859-1'));
-        $this->assertSame('déjà', mb_convert_encoding(utf8_decode('déjà'), 'Utf-8', ['ASCII', 'ISO-2022-JP', 'UTF-8', 'ISO-8859-1']));
     }
 
     /**
@@ -567,7 +575,7 @@ class MbstringTest extends TestCase
     {
         $this->assertSame(3, mb_strwidth("\000実", 'UTF-8'));
         $this->assertSame(4, mb_strwidth('déjà', 'UTF-8'));
-        $this->assertSame(4, mb_strwidth(utf8_decode('déjà'), 'CP1252'));
+        $this->assertSame(4, mb_strwidth(mb_convert_encoding('déjà', 'ISO-8859-1', 'UTF-8'), 'CP1252'));
     }
 
     /**
