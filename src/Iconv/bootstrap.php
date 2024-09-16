@@ -66,7 +66,7 @@ if (extension_loaded('mbstring')) {
     }
 } else {
     if (!function_exists('iconv_strlen')) {
-        if (extension_loaded('xml')) {
+        if (extension_loaded('xml') && \PHP_VERSION_ID < 80200) {
             function iconv_strlen($string, $encoding = null) { return p\Iconv::strlen1($string, $encoding); }
         } else {
             function iconv_strlen($string, $encoding = null) { return p\Iconv::strlen2($string, $encoding); }

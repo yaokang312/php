@@ -435,7 +435,7 @@ final class Iconv
             $hasXml = \extension_loaded('xml');
         }
 
-        if ($hasXml) {
+        if ($hasXml && \PHP_VERSION_ID < 80200) {
             return self::strlen1($s, $encoding);
         }
 
