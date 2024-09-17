@@ -648,13 +648,36 @@ class MbstringTest extends TestCase
      * @covers \Symfony\Polyfill\Mbstring\Mbstring::mb_str_pad
      *
      * @dataProvider mbStrPadInvalidArgumentsProvider
+     * @requires PHP 8
      */
     public function testMbStrPadInvalidArguments(string $expectedError, string $string, int $length, string $padString, int $padType, ?string $encoding = null)
     {
         $this->expectException(\ValueError::class);
-        $this->expectErrorMessage($expectedError);
+        $this->expectExceptionMessage($expectedError);
 
         mb_str_pad($string, $length, $padString, $padType, $encoding);
+    }
+
+    /**
+     * @covers \Symfony\Polyfill\Mbstring\Mbstring::mb_str_pad
+     *
+     * @dataProvider mbStrPadInvalidArgumentsProvider
+     * @requires PHP < 8
+     */
+    public function testMbStrPadInvalidArgumentsOnPhp7(string $expectedError, string $string, int $length, string $padString, int $padType, ?string $encoding = null)
+    {
+        $this->expectException(\ErrorException::class);
+        $this->expectExceptionMessage($expectedError);
+
+        set_error_handler(static function ($errno, $errstr, $errfile, $errline) {
+            throw new \ErrorException($errstr, $errno, $errfile, $errline);
+        });
+
+        try {
+            mb_str_pad($string, $length, $padString, $padType, $encoding);
+        } finally {
+            restore_error_handler();
+        }
     }
 
     /**
@@ -815,10 +838,34 @@ class MbstringTest extends TestCase
         $this->assertSame($expected, mb_rtrim($string, $characters, $encoding));
     }
 
+    /**
+     * @requires PHP 8
+     */
     public function testMbTrimException()
     {
         $this->expectException(\ValueError::class);
+        $this->expectExceptionMessage('mb_trim(): Argument #3 ($encoding) must be a valid encoding, "NULL" given');
+
         mb_trim("\u{180F}", '', 'NULL');
+    }
+
+    /**
+     * @requires PHP < 8
+     */
+    public function testMbTrimExceptionOnPhp7()
+    {
+        $this->expectException(\ErrorException::class);
+        $this->expectExceptionMessage('mb_trim(): Argument #3 ($encoding) must be a valid encoding, "NULL" given');
+
+        set_error_handler(static function ($errno, $errstr, $errfile, $errline) {
+            throw new \ErrorException($errstr, $errno, $errfile, $errline);
+        });
+
+        try {
+            mb_trim("\u{180F}", '', 'NULL');
+        } finally {
+            restore_error_handler();
+        }
     }
 
     public function testMbTrimEncoding()
