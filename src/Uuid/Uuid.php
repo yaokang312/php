@@ -77,10 +77,6 @@ final class Uuid
         }
 
         if (!self::isValid($uuid_ns)) {
-            if (80000 > \PHP_VERSION_ID) {
-                return false;
-            }
-
             throw new \ValueError('uuid_generate_md5(): Argument #1 ($uuid_ns) UUID expected');
         }
 
@@ -118,10 +114,6 @@ final class Uuid
         }
 
         if (!self::isValid($uuid_ns)) {
-            if (80000 > \PHP_VERSION_ID) {
-                return false;
-            }
-
             throw new \ValueError('uuid_generate_sha1(): Argument #1 ($uuid_ns) UUID expected');
         }
 
@@ -172,18 +164,10 @@ final class Uuid
         }
 
         if (!self::isValid($uuid1)) {
-            if (80000 > \PHP_VERSION_ID) {
-                return false;
-            }
-
             throw new \ValueError('uuid_compare(): Argument #1 ($uuid1) UUID expected');
         }
 
         if (!self::isValid($uuid2)) {
-            if (80000 > \PHP_VERSION_ID) {
-                return false;
-            }
-
             throw new \ValueError('uuid_compare(): Argument #2 ($uuid2) UUID expected');
         }
 
@@ -197,7 +181,7 @@ final class Uuid
 
             return null;
         }
-        if (80000 <= \PHP_VERSION_ID && !self::isValid($uuid)) {
+        if (!self::isValid($uuid)) {
             throw new \ValueError('uuid_is_null(): Argument #1 ($uuid) UUID expected');
         }
 
@@ -217,10 +201,6 @@ final class Uuid
         }
 
         if (null === $parsed = self::parse($uuid)) {
-            if (80000 > \PHP_VERSION_ID) {
-                return false;
-            }
-
             throw new \ValueError('uuid_type(): Argument #1 ($uuid) UUID expected');
         }
 
@@ -240,10 +220,6 @@ final class Uuid
         }
 
         if (null === $parsed = self::parse($uuid)) {
-            if (80000 > \PHP_VERSION_ID) {
-                return false;
-            }
-
             throw new \ValueError('uuid_variant(): Argument #1 ($uuid) UUID expected');
         }
 
@@ -271,10 +247,6 @@ final class Uuid
         $parsed = self::parse($uuid);
 
         if (self::UUID_TYPE_TIME !== ($parsed['version'] ?? null)) {
-            if (80000 > \PHP_VERSION_ID) {
-                return false;
-            }
-
             throw new \ValueError('uuid_time(): Argument #1 ($uuid) UUID DCE TIME expected');
         }
 
@@ -300,10 +272,6 @@ final class Uuid
         $parsed = self::parse($uuid);
 
         if (self::UUID_TYPE_TIME !== ($parsed['version'] ?? null)) {
-            if (80000 > \PHP_VERSION_ID) {
-                return false;
-            }
-
             throw new \ValueError('uuid_mac(): Argument #1 ($uuid) UUID DCE TIME expected');
         }
 
@@ -319,10 +287,6 @@ final class Uuid
         }
 
         if (!self::isValid($uuid)) {
-            if (80000 > \PHP_VERSION_ID) {
-                return false;
-            }
-
             throw new \ValueError('uuid_parse(): Argument #1 ($uuid) UUID expected');
         }
 
@@ -338,10 +302,6 @@ final class Uuid
         }
 
         if (16 !== \strlen($bytes)) {
-            if (80000 > \PHP_VERSION_ID) {
-                return false;
-            }
-
             throw new \ValueError('uuid_unparse(): Argument #1 ($uuid) UUID expected');
         }
 

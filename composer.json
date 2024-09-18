@@ -16,12 +16,12 @@
         }
     ],
     "require": {
-        "php": ">=7.2"
+        "php": ">=8.1"
     },
     "require-dev": {
-        "symfony/intl": "^5.4|^6.4",
+        "symfony/intl": "^6.4",
         "symfony/phpunit-bridge": "^6.4",
-        "symfony/var-dumper": "^5.4|^6.4"
+        "symfony/var-dumper": "^6.4"
     },
     "replace": {
         "symfony/polyfill-apcu": "self.version",
@@ -64,10 +64,7 @@
             "src/Intl/Normalizer/Resources/stubs",
             "src/Php84/Resources/stubs",
             "src/Php83/Resources/stubs",
-            "src/Php82/Resources/stubs",
-            "src/Php81/Resources/stubs",
-            "src/Php80/Resources/stubs",
-            "src/Php73/Resources/stubs"
+            "src/Php82/Resources/stubs"
         ]
     },
     "minimum-stability": "dev"

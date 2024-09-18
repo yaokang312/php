@@ -95,7 +95,7 @@ class Php84Test extends TestCase
             ['łámał', 'Łámał'],
             // Full case-mapping and case-folding that changes the length of the string only supported
             // in PHP > 7.3.
-            ['ßst', \PHP_VERSION_ID < 70300 ? 'ßst' : 'Ssst'],
+            ['ßst', 'Ssst'],
         ];
     }
 
@@ -110,8 +110,8 @@ class Php84Test extends TestCase
             ['ＡＢＳ', 'ａＢＳ'],
             ['Đắt quá!', 'đắt quá!'],
             ['აბგ', 'აბგ'],
-            ['ǈ', \PHP_VERSION_ID < 70200 ? 'ǈ' : 'ǉ'],
-            ["\u{01CB}", \PHP_VERSION_ID < 70200 ? "\u{01CB}" : "\u{01CC}"],
+            ['ǈ', 'ǉ'],
+            ["\u{01CB}", "\u{01CC}"],
             ["\u{01CA}", "\u{01CC}"],
             ["\u{01CA}\u{01CA}", "\u{01CC}\u{01CA}"],
             ["\u{212A}\u{01CA}", "\u{006b}\u{01CA}"],

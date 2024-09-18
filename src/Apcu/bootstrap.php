@@ -15,41 +15,37 @@ if (!extension_loaded('apc') && !extension_loaded('apcu')) {
     return;
 }
 
-if (\PHP_VERSION_ID >= 80000) {
-    return require __DIR__.'/bootstrap80.php';
-}
-
 if (extension_loaded('Zend Data Cache')) {
     if (!function_exists('apcu_add')) {
-        function apcu_add($key, $value = null, $ttl = 0) { return p\Apcu::apcu_add($key, $value, $ttl); }
+        function apcu_add($key, mixed $value, ?int $ttl = 0): array|bool { return p\Apcu::apcu_add($key, $value, (int) $ttl); }
     }
     if (!function_exists('apcu_delete')) {
-        function apcu_delete($key) { return p\Apcu::apcu_delete($key); }
+        function apcu_delete($key): array|bool { return p\Apcu::apcu_delete($key); }
     }
     if (!function_exists('apcu_exists')) {
-        function apcu_exists($key) { return p\Apcu::apcu_exists($key); }
+        function apcu_exists($key): array|bool { return p\Apcu::apcu_exists($key); }
     }
     if (!function_exists('apcu_fetch')) {
         function apcu_fetch($key, &$success = null) { return p\Apcu::apcu_fetch($key, $success); }
     }
     if (!function_exists('apcu_store')) {
-        function apcu_store($key, $value = null, $ttl = 0) { return p\Apcu::apcu_store($key, $value, $ttl); }
+        function apcu_store($key, mixed $value, ?int $ttl = 0): array|bool { return p\Apcu::apcu_store($key, $value, (int) $ttl); }
     }
 } else {
     if (!function_exists('apcu_add')) {
-        function apcu_add($key, $value = null, $ttl = 0) { return apc_add($key, $value, $ttl); }
+        function apcu_add($key, mixed $value, ?int $ttl = 0): array|bool { return apc_add($key, $value, (int) $ttl); }
     }
     if (!function_exists('apcu_delete')) {
-        function apcu_delete($key) { return apc_delete($key); }
+        function apcu_delete($key): array|bool { return apc_delete($key); }
     }
     if (!function_exists('apcu_exists')) {
-        function apcu_exists($key) { return apc_exists($key); }
+        function apcu_exists($key): array|bool { return apc_exists($key); }
     }
     if (!function_exists('apcu_fetch')) {
         function apcu_fetch($key, &$success = null) { return apc_fetch($key, $success); }
     }
     if (!function_exists('apcu_store')) {
-        function apcu_store($key, $value = null, $ttl = 0) { return apc_store($key, $value, $ttl); }
+        function apcu_store($key, mixed $value, ?int $ttl = 0): array|bool { return apc_store($key, $value, (int) $ttl); }
     }
 }
 
@@ -75,7 +71,7 @@ if (!function_exists('apcu_sma_info')) {
 if (!class_exists('APCuIterator', false) && class_exists('APCIterator', false)) {
     class APCuIterator extends APCIterator
     {
-        public function __construct($search = null, $format = \APC_ITER_ALL, $chunk_size = 100, $list = \APC_LIST_ACTIVE)
+        public function __construct($search = null, $format = APC_ITER_ALL, $chunk_size = 100, $list = APC_LIST_ACTIVE)
         {
             parent::__construct('user', $search, $format, $chunk_size, $list);
         }

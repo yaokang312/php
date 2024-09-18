@@ -342,13 +342,7 @@ abstract class AbstractNumberFormatterTest extends TestCase
      */
     public function testFormatTypeCurrency($formatter, $value)
     {
-        if (\PHP_VERSION_ID >= 80000) {
-            $this->expectException(\ValueError::class);
-        } elseif (method_exists($this, 'expectWarning')) {
-            $this->expectWarning();
-        } else {
-            $this->expectException(Warning::class);
-        }
+        $this->expectException(\ValueError::class);
 
         $formatter->format($value, NumberFormatter::TYPE_CURRENCY);
     }
@@ -358,11 +352,9 @@ abstract class AbstractNumberFormatterTest extends TestCase
      */
     public function testFormatTypeCurrencyReturn($formatter, $value)
     {
-        if (\PHP_VERSION_ID >= 80000) {
-            $this->expectException(\ValueError::class);
-        }
+        $this->expectException(\ValueError::class);
 
-        $this->assertFalse(@$formatter->format($value, NumberFormatter::TYPE_CURRENCY));
+        @$formatter->format($value, NumberFormatter::TYPE_CURRENCY);
     }
 
     public static function formatTypeCurrencyProvider()
@@ -729,13 +721,7 @@ abstract class AbstractNumberFormatterTest extends TestCase
 
     public function testParseTypeDefault()
     {
-        if (\PHP_VERSION_ID >= 80000) {
-            $this->expectException(\ValueError::class);
-        } elseif (method_exists($this, 'expectWarning')) {
-            $this->expectWarning();
-        } else {
-            $this->expectException(Warning::class);
-        }
+        $this->expectException(\ValueError::class);
 
         $formatter = static::getNumberFormatter('en', NumberFormatter::DECIMAL);
         $formatter->parse('1', NumberFormatter::TYPE_DEFAULT);
@@ -863,13 +849,7 @@ abstract class AbstractNumberFormatterTest extends TestCase
 
     public function testParseTypeCurrency()
     {
-        if (\PHP_VERSION_ID >= 80000) {
-            $this->expectException(\ValueError::class);
-        } elseif (method_exists($this, 'expectWarning')) {
-            $this->expectWarning();
-        } else {
-            $this->expectException(Warning::class);
-        }
+        $this->expectException(\ValueError::class);
 
         $formatter = static::getNumberFormatter('en', NumberFormatter::DECIMAL);
         $formatter->parse('1', NumberFormatter::TYPE_CURRENCY);

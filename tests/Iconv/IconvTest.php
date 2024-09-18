@@ -67,21 +67,6 @@ class IconvTest extends TestCase
 
     /**
      * @covers \Symfony\Polyfill\Iconv\Iconv::iconv_substr
-     *
-     * @requires PHP < 8
-     */
-    public function testIconvSubstrReturnsFalsePrePHP8()
-    {
-        $c = 'déjà';
-        $this->assertFalse(iconv_substr($c, 42, 1, 'UTF-8'));
-        $this->assertFalse(iconv_substr($c, -42, 1));
-        $this->assertFalse(iconv_substr($c, 42, 26));
-    }
-
-    /**
-     * @covers \Symfony\Polyfill\Iconv\Iconv::iconv_substr
-     *
-     * @requires PHP 8
      */
     public function testIconvSubstrReturnsEmptyPostPHP8()
     {

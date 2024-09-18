@@ -41,12 +41,10 @@ class UuidTest extends TestCase
 
     public function testGenerateMd5WithInvalidUuid()
     {
-        if (80000 <= \PHP_VERSION_ID) {
-            $this->expectException(\ValueError::class);
-            $this->expectExceptionMessage('uuid_generate_md5(): Argument #1 ($uuid_ns) UUID expected');
-        }
+        $this->expectException(\ValueError::class);
+        $this->expectExceptionMessage('uuid_generate_md5(): Argument #1 ($uuid_ns) UUID expected');
 
-        $this->assertFalse(@uuid_generate_md5('not a uuid', 'foo'));
+        @uuid_generate_md5('not a uuid', 'foo');
     }
 
     public function testGenerateSha1()
@@ -68,12 +66,10 @@ class UuidTest extends TestCase
 
     public function testGenerateSha1WithInvalidUuid()
     {
-        if (80000 <= \PHP_VERSION_ID) {
-            $this->expectException(\ValueError::class);
-            $this->expectExceptionMessage('uuid_generate_sha1(): Argument #1 ($uuid_ns) UUID expected');
-        }
+        $this->expectException(\ValueError::class);
+        $this->expectExceptionMessage('uuid_generate_sha1(): Argument #1 ($uuid_ns) UUID expected');
 
-        $this->assertFalse(@uuid_generate_sha1('not a uuid', 'foo'));
+        @uuid_generate_sha1('not a uuid', 'foo');
     }
 
     public static function provideCreateNoOverlapTests(): array
@@ -140,22 +136,18 @@ class UuidTest extends TestCase
 
     public function testCompareWithInvalidUuidLeft()
     {
-        if (80000 <= \PHP_VERSION_ID) {
-            $this->expectException(\ValueError::class);
-            $this->expectExceptionMessage('uuid_compare(): Argument #1 ($uuid1) UUID expected');
-        }
+        $this->expectException(\ValueError::class);
+        $this->expectExceptionMessage('uuid_compare(): Argument #1 ($uuid1) UUID expected');
 
-        $this->assertFalse(@uuid_compare('foobar', 'fa83b381-328c-46b8-8c90-4e9ba47dfa4b'));
+        @uuid_compare('foobar', 'fa83b381-328c-46b8-8c90-4e9ba47dfa4b');
     }
 
     public function testCompareWithInvalidUuidRight()
     {
-        if (80000 <= \PHP_VERSION_ID) {
-            $this->expectException(\ValueError::class);
-            $this->expectExceptionMessage('uuid_compare(): Argument #2 ($uuid2) UUID expected');
-        }
+        $this->expectException(\ValueError::class);
+        $this->expectExceptionMessage('uuid_compare(): Argument #2 ($uuid2) UUID expected');
 
-        $this->assertFalse(@uuid_compare('fa83b381-328c-46b8-8c90-4e9ba47dfa4b', 'foobar'));
+        @uuid_compare('fa83b381-328c-46b8-8c90-4e9ba47dfa4b', 'foobar');
     }
 
     public static function provideIsNullTest(): array
@@ -175,12 +167,10 @@ class UuidTest extends TestCase
 
     public function testIsNullWithInvalidUuid()
     {
-        if (80000 <= \PHP_VERSION_ID) {
-            $this->expectException(\ValueError::class);
-            $this->expectExceptionMessage('uuid_is_null(): Argument #1 ($uuid) UUID expected');
-        }
+        $this->expectException(\ValueError::class);
+        $this->expectExceptionMessage('uuid_is_null(): Argument #1 ($uuid) UUID expected');
 
-        $this->assertFalse(@uuid_is_null('foobar'));
+        @uuid_is_null('foobar');
     }
 
     public static function provideTypeTest(): array
@@ -201,12 +191,10 @@ class UuidTest extends TestCase
 
     public function testTypeWithInvalidUuid()
     {
-        if (80000 <= \PHP_VERSION_ID) {
-            $this->expectException(\ValueError::class);
-            $this->expectExceptionMessage('uuid_type(): Argument #1 ($uuid) UUID expected');
-        }
+        $this->expectException(\ValueError::class);
+        $this->expectExceptionMessage('uuid_type(): Argument #1 ($uuid) UUID expected');
 
-        $this->assertFalse(@uuid_type('foobar'));
+        @uuid_type('foobar');
     }
 
     public static function provideVariantTest(): array
@@ -226,12 +214,10 @@ class UuidTest extends TestCase
 
     public function testVariantWithInvalidUuid()
     {
-        if (80000 <= \PHP_VERSION_ID) {
-            $this->expectException(\ValueError::class);
-            $this->expectExceptionMessage('uuid_variant(): Argument #1 ($uuid) UUID expected');
-        }
+        $this->expectException(\ValueError::class);
+        $this->expectExceptionMessage('uuid_variant(): Argument #1 ($uuid) UUID expected');
 
-        $this->assertFalse(@uuid_variant('foobar'));
+        @uuid_variant('foobar');
     }
 
     public static function provideTimeTest(): array
@@ -262,12 +248,10 @@ class UuidTest extends TestCase
      */
     public function testTimeWithInvalidUuid(string $uuid)
     {
-        if (80000 <= \PHP_VERSION_ID) {
-            $this->expectException(\ValueError::class);
-            $this->expectExceptionMessage('uuid_time(): Argument #1 ($uuid) UUID DCE TIME expected');
-        }
+        $this->expectException(\ValueError::class);
+        $this->expectExceptionMessage('uuid_time(): Argument #1 ($uuid) UUID DCE TIME expected');
 
-        $this->assertFalse(@uuid_time($uuid));
+        @uuid_time($uuid);
     }
 
     public static function provideMacTest(): array
@@ -298,12 +282,10 @@ class UuidTest extends TestCase
      */
     public function testMacWithInvalidUuid(string $uuid)
     {
-        if (80000 <= \PHP_VERSION_ID) {
-            $this->expectException(\ValueError::class);
-            $this->expectExceptionMessage('uuid_mac(): Argument #1 ($uuid) UUID DCE TIME expected');
-        }
+        $this->expectException(\ValueError::class);
+        $this->expectExceptionMessage('uuid_mac(): Argument #1 ($uuid) UUID DCE TIME expected');
 
-        $this->assertFalse(@uuid_mac($uuid));
+        @uuid_mac($uuid);
     }
 
     public static function provideParseTest(): array
@@ -325,12 +307,10 @@ class UuidTest extends TestCase
 
     public function testParseWithInvalidUuid()
     {
-        if (80000 <= \PHP_VERSION_ID) {
-            $this->expectException(\ValueError::class);
-            $this->expectExceptionMessage('uuid_parse(): Argument #1 ($uuid) UUID expected');
-        }
+        $this->expectException(\ValueError::class);
+        $this->expectExceptionMessage('uuid_parse(): Argument #1 ($uuid) UUID expected');
 
-        $this->assertFalse(@uuid_parse('foobar'));
+        @uuid_parse('foobar');
     }
 
     public static function provideUnparseTest(): array
@@ -361,11 +341,9 @@ class UuidTest extends TestCase
      */
     public function testUnparseWithInvalidUuid(string $uuid)
     {
-        if (80000 <= \PHP_VERSION_ID) {
-            $this->expectException(\ValueError::class);
-            $this->expectExceptionMessage('uuid_unparse(): Argument #1 ($uuid) UUID expected');
-        }
+        $this->expectException(\ValueError::class);
+        $this->expectExceptionMessage('uuid_unparse(): Argument #1 ($uuid) UUID expected');
 
-        $this->assertFalse(@uuid_unparse($uuid));
+        @uuid_unparse($uuid);
     }
 }

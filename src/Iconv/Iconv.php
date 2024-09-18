@@ -514,14 +514,10 @@ final class Iconv
             $start += $slen;
         }
         if (0 > $start) {
-            if (\PHP_VERSION_ID < 80000) {
-                return false;
-            }
-
             $start = 0;
         }
         if ($start >= $slen) {
-            return \PHP_VERSION_ID >= 80000 ? '' : false;
+            return '';
         }
 
         $rx = $slen - $start;
@@ -533,7 +529,7 @@ final class Iconv
             return '';
         }
         if (0 > $length) {
-            return \PHP_VERSION_ID >= 80000 ? '' : false;
+            return '';
         }
 
         if ($length > $rx) {
