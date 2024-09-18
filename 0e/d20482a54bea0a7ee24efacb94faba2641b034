@@ -1,0 +1,13 @@
+---------------------------------------------------------------------------
+
+by derrabus at 2024-09-11T08:27:31Z
+
+> There's one `utf8_decode()` occurrence left in Iconv. The recommended replacement `mb_convert_encoding($string, 'ISO-8859-1', 'UTF-8')` doesn't work in this case, so it deserves a bit more research. However, this fixes some problems here and there already.
+
+We used to have a polyfill for `utf8_decode()` in the now-removed PHP 7.2 polyfill package. Would it help if we copied the code of that polyfill over to the iconv package?
+
+---------------------------------------------------------------------------
+
+by alexandre-daubois at 2024-09-11T08:35:48Z
+
+Indeed @derrabus, that's smart. I copied the function and added it to Iconv as a private method. Seems to work really well 👍
