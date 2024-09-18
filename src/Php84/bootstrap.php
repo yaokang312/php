@@ -60,3 +60,7 @@ if (extension_loaded('mbstring')) {
         function mb_rtrim(string $string, ?string $characters = null, ?string $encoding = null): string { return p\Php84::mb_rtrim($string, $characters, $encoding); }
     }
 }
+
+if (!function_exists('grapheme_str_split') && function_exists('grapheme_substr')) {
+    function grapheme_str_split(string $string, int $length = 1) { return p\Php84::grapheme_str_split($string, $length); }
+}

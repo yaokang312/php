@@ -7,6 +7,7 @@ This component provides features added to PHP 8.4 core:
 - [`array_find`, `array_find_key`, `array_any` and `array_all`](https://wiki.php.net/rfc/array_find)
 - [`Deprecated`](https://wiki.php.net/rfc/deprecated_attribute)
 - `CURL_HTTP_VERSION_3` and `CURL_HTTP_VERSION_3ONLY` constants
+- [`grapheme_str_split`](https://wiki.php.net/rfc/grapheme_str_split)
 
 More information can be found in the
 [main Polyfill README](https://github.com/symfony/polyfill/blob/main/README.md).
