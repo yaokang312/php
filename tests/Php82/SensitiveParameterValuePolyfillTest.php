@@ -17,7 +17,7 @@ use Symfony\Polyfill\Php82\SensitiveParameterValue as SensitiveParameterValuePol
 /**
  * @author Tim Düsterhus <duesterhus@woltlab.com>
  */
-class SensitiveParameterValueTest extends TestCase
+class SensitiveParameterValuePolyfillTest extends TestCase
 {
     public static function sensitiveParameterValueProvider()
     {
