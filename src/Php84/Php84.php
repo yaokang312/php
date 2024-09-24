@@ -169,4 +169,23 @@ final class Php84
 
         return mb_convert_encoding($string, $encoding, 'UTF-8');
     }
+
+    public static function bcdivmod(string $num1, string $num2, ?int $scale = null): array {
+        if ($num2 === '0') {
+            throw new \DivisionByZeroError('Division by zero');
+        }
+
+        if (!is_numeric($num1)) {
+            throw new \ValueError('Argument #1 ($num1) is not well-formed');
+        }
+
+        if (!is_numeric($num2)) {
+            throw new \ValueError('Argument #2 ($num2) is not well-formed');
+        }
+
+        return [
+            \bcdiv($num1, $num2, 0),
+            \bcmod($num1, $num2, $scale),
+        ];
+    }
 }
