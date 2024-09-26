@@ -238,9 +238,8 @@ final class Ctype
 
     /**
      * @param mixed $input
-     * @param string $function
      */
-    public static function checkType($input, $function)
+    private static function checkType($input, string $function): void
     {
         if (\PHP_VERSION_ID >= 80100 && !\is_string($input)) {
             @trigger_error($function.'(): Argument of type '.get_debug_type($input).' will be interpreted as string in the future', \E_USER_DEPRECATED);
