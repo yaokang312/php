@@ -1,0 +1,33 @@
+{
+    "name": "symfony/polyfill-php85",
+    "type": "library",
+    "description": "Symfony polyfill backporting some PHP 8.5+ features to lower PHP versions",
+    "keywords": ["polyfill", "shim", "compatibility", "portable"],
+    "homepage": "https://symfony.com",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Alexandre Daubois",
+            "email": "alex.daubois@gmail.com"
+        },
+        {
+            "name": "Symfony Community",
+            "homepage": "https://symfony.com/contributors"
+        }
+    ],
+    "require": {
+        "php": ">=7.2",
+        "symfony/polyfill-php80": "^1"
+    },
+    "autoload": {
+        "psr-4": { "Symfony\\Polyfill\\Php85\\": "" },
+        "classmap": [ "Resources/stubs" ]
+    },
+    "minimum-stability": "dev",
+    "extra": {
+        "thanks": {
+            "name": "symfony/polyfill",
+            "url": "https://github.com/symfony/polyfill"
+        }
+    }
+}
