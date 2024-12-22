@@ -886,6 +886,7 @@ class MbstringTest extends TestCase
         yield [' test ', ' test ', ''];
 
         yield ['いああああ', 'あああああああああああああああああああああああああああああああああいああああ', 'あ'];
+        yield ['あいうえお　', '　あいうえお　'];
 
         yield ['漢字', "\u{FFFE}漢字", "\u{FFFE}\u{FEFF}"];
         yield [' abcd ', ' abcd ', ''];
@@ -902,6 +903,7 @@ class MbstringTest extends TestCase
         yield ['                                                                                                                                 a', str_repeat(' ', 129).'a'];
 
         yield ['あああああああああああああああああああああああああああああああああい', 'あああああああああああああああああああああああああああああああああいああああ', 'あ'];
+        yield ['　あいうえお', '　あいうえお　'];
 
         yield [' abcd ', ' abcd ', ''];
 
