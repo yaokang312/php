@@ -1,0 +1,17 @@
+---------------------------------------------------------------------------
+
+by stof at 2024-11-22T14:19:09Z
+
+the test failure is because one test is comparing the currencies in this polyfill with the ICU data available in symfony/intl, and symfony/intl has recently updated its data to ICU 76.1 which has added new currencies.
+
+---------------------------------------------------------------------------
+
+by jaapio at 2024-11-22T14:22:27Z
+
+@stof I assume there is no need for me to look into this regarding this PR?
+
+---------------------------------------------------------------------------
+
+by stof at 2024-11-22T14:24:34Z
+
+@jaapio you indeed don't need to care about the failures in the PHP 7.x jobs here. The jobs for 8.x have additional failures, but I don't think they are related to your change either.
